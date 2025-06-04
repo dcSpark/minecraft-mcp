@@ -1,13 +1,14 @@
-import {Bot} from 'mineflayer';
+import { Bot } from 'mineflayer';
 import mineflayer_pathfinder from 'mineflayer-pathfinder';
-import {Vec3} from 'vec3';
+import { Vec3 } from 'vec3';
 
-import {isSignalAborted} from '..';
-import {teleportToLocation} from './teleportToLocation.js';
+import { isSignalAborted } from '../index.js';
+import { teleportToLocation } from './teleportToLocation.js';
+import { asyncwrap } from './asyncwrap.js';
 
 const {
   Movements,
-  goals: {GoalNear},
+  goals: { GoalNear },
 } = mineflayer_pathfinder;
 
 interface INavigateToLocationOptions {
@@ -45,14 +46,14 @@ export const navigateToLocation = async (
     verbose: false,
     allowTeleport: false,
   };
-  const {x, y, z, range, verbose, allowTeleport, movements, signal} = {
+  const { x, y, z, range, verbose, allowTeleport, movements, signal } = {
     ...defaultOptions,
     ...options,
   };
 
   // console.log(`Allow teleport: ${allowTeleport}`)
   if (allowTeleport) {
-    teleportToLocation(bot, {x, y, z, verbose});
+    teleportToLocation(bot, { x, y, z, verbose });
     return;
   }
 
@@ -82,7 +83,7 @@ export const navigateToLocation = async (
 
   // if the distance is greater than 150 blocks, go to a closer location instead
   if (distance > 150) {
-    const closerLocation = getIntermediateDestination(bot, {x, y, z, range});
+    const closerLocation = getIntermediateDestination(bot, { x, y, z, range });
 
     if (verbose)
       bot.emit(
@@ -110,7 +111,7 @@ export const navigateToLocation = async (
   }
 
   // execute a cancelable move to the destination in order to allow for signal cancellation
-  const navigateResult = await cancelableMove(bot, {goal, signal});
+  const navigateResult = await cancelableMove(bot, { goal, signal });
 
   if (navigateResult.reachedEndTarget) {
     if (verbose) {
@@ -160,7 +161,7 @@ export const getNearestSurfaceBlock = (
   bot: Bot,
   options: IGetNearestSurfaceBlockOptions,
 ): number => {
-  const {x, y, z} = options;
+  const { x, y, z } = options;
   let block = bot.blockAt(new Vec3(x, y, z));
   let newY = Math.ceil(y);
   const mcData = require('minecraft-data')(bot.version);
@@ -203,7 +204,7 @@ export const calculateNormalizedDirection = (
   bot: Bot,
   options: ICalculateNormalizedDirectionOptions,
 ): Vec3 => {
-  const {targetX, targetY, targetZ} = options;
+  const { targetX, targetY, targetZ } = options;
   // Get the bot's current position
   const botPosition = bot.entity.position;
 
@@ -217,8 +218,8 @@ export const calculateNormalizedDirection = (
   // Normalize the direction vector
   const length = Math.sqrt(
     directionVector.x * directionVector.x +
-      directionVector.y * directionVector.y +
-      directionVector.z * directionVector.z,
+    directionVector.y * directionVector.y +
+    directionVector.z * directionVector.z,
   );
 
   return new Vec3(
@@ -242,7 +243,7 @@ interface ICancelableMove {
  * @return {Promise<{reachedEndTarget: boolean, canceled: boolean, error: any}>} - Returns an object with the result of the move.
  */
 export const cancelableMove = async (bot: Bot, options: ICancelableMove) => {
-  const {goal, signal} = options;
+  const { goal, signal } = options;
   const result = {
     reachedEndTarget: false,
     canceled: false,
@@ -251,7 +252,7 @@ export const cancelableMove = async (bot: Bot, options: ICancelableMove) => {
 
   try {
     bot.pathfinder.setGoal(null);
-  } catch (er) {} // force a stop to the pathfinder
+  } catch (er) { } // force a stop to the pathfinder
 
   let abortHandler: (() => void) | null = null;
 
@@ -270,7 +271,7 @@ export const cancelableMove = async (bot: Bot, options: ICancelableMove) => {
     const error = err as Error;
     try {
       bot.pathfinder.setGoal(null);
-    } catch (err) {}
+    } catch (err) { }
 
     if (error.message === 'Cancelled') {
       result.canceled = true;
@@ -310,7 +311,7 @@ const getIntermediateDestination = (
   const defaultOptions = {
     verbose: false,
   };
-  const {x, y, z} = {...defaultOptions, ...options};
+  const { x, y, z } = { ...defaultOptions, ...options };
   // choose a closer location to navigate to by casting a ray to the target location and travilling 128 units in that direction
   const direction = calculateNormalizedDirection(bot, {
     targetX: x,

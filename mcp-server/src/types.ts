@@ -7,6 +7,7 @@ declare module 'mineflayer' {
         alteraBotEndObservation: (message: string) => void;
         alteraBotTextObservation: (message: string) => void;
         alteraBotStartObservation: (message: string) => void;
+        alteraBotDelayedEndObservation: (message: string) => void;
     }
 
     interface Bot {
@@ -25,6 +26,12 @@ declare module 'mineflayer' {
 
         // Movements from pathfinder plugin
         Movements?: any;
+
+        // Interface management (custom chest/inventory management)
+        openedInterface?: any;
+        currentInterface?: any;
+        setInterface?: (interfaceToSet: any, position?: any, chest?: any) => void;
+        updateInterface?: (interfaceToSet: any) => void;
     }
 
     interface Entity {

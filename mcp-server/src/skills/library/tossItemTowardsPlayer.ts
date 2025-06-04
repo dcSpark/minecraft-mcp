@@ -1,10 +1,10 @@
-import {Bot} from 'mineflayer';
+import { Bot } from 'mineflayer';
 import mineflayer_pathfinder from 'mineflayer-pathfinder';
-import {Vec3} from 'vec3';
+import { Vec3 } from 'vec3';
 
-import {isSignalAborted} from '..';
-import {findClosestItemName} from './findClosestItemName.js';
-import {findClosestPlayerByName} from './findClosestPlayerByName.js';
+import { isSignalAborted } from '../index.js';
+import { findClosestItemName } from './findClosestItemName.js';
+import { findClosestPlayerByName } from './findClosestPlayerByName.js';
 
 interface ITossItemTowardsPlayerOptions {
   playerName: string;
@@ -37,7 +37,7 @@ export const tossItemTowardsPlayer = async (
   const defaultOptions = {
     itemCount: 1,
   };
-  const {playerName, itemName, itemCount, signal} = {
+  const { playerName, itemName, itemCount, signal } = {
     ...defaultOptions,
     ...options,
   };
@@ -53,7 +53,7 @@ export const tossItemTowardsPlayer = async (
     );
   }
 
-  const closestItemName = findClosestItemName(bot, {name: itemName});
+  const closestItemName = findClosestItemName(bot, { name: itemName });
 
   if (!closestItemName) {
     return bot.emit(
@@ -62,7 +62,7 @@ export const tossItemTowardsPlayer = async (
     );
   }
 
-  const player = findClosestPlayerByName(bot, {name: playerName});
+  const player = findClosestPlayerByName(bot, { name: playerName });
 
   if (!player) {
     console.log('Player not found!');
@@ -102,7 +102,7 @@ export const tossItemTowardsPlayer = async (
   // Create a goal to move near the player
   const maxDistance = 3; // Maximum distance to toss item
   const {
-    goals: {GoalNear},
+    goals: { GoalNear },
   } = mineflayer_pathfinder;
   const goal = new GoalNear(playerPos.x, playerPos.y, playerPos.z, maxDistance);
   // Move close to the player
@@ -139,7 +139,7 @@ export const tossItemTowardsPlayer = async (
   const itemForToss = bot.inventory
     .items()
     .find((item) => item.name === closestItemName);
-  return tossItem(bot, {player, item: itemForToss, itemCount});
+  return tossItem(bot, { player, item: itemForToss, itemCount });
 };
 
 interface ITossItemOptions {
@@ -163,7 +163,7 @@ interface ITossItemOptions {
  *
  **/
 const tossItem = async (bot: Bot, options: ITossItemOptions) => {
-  const {player, item, itemCount} = options;
+  const { player, item, itemCount } = options;
   // console.log(`Tossing  ${item.name} towards ${player.username}`);
 
   // look slightly abot the player to help the toss happen

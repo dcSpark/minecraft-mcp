@@ -1,20 +1,20 @@
-import {closest} from 'fastest-levenshtein';
+import { closest } from 'fastest-levenshtein';
 import mcData from 'minecraft-data';
-import {Bot} from 'mineflayer';
+import { Bot } from 'mineflayer';
 import mineflayer_pathfinder from 'mineflayer-pathfinder';
 
-import {ISkillServiceParams} from '../../types/skillType.js';
-import {isSignalAborted} from '..';
-import {asyncwrap} from './asyncwrap.js';
-import {findClosestItemName} from './findClosestItemName.js';
-import {getInventory} from './inventoryHelpers.js';
+import { ISkillServiceParams } from '../../types/skillType.js';
+import { isSignalAborted } from '../index.js';
+import { asyncwrap } from './asyncwrap.js';
+import { findClosestItemName } from './findClosestItemName.js';
+import { getInventory } from './inventoryHelpers.js';
 
 const {
-  goals: {GoalNear},
+  goals: { GoalNear },
 } = mineflayer_pathfinder;
 
 export const getFuelBurnTime = (fuelName: string): number => {
-  const fuelBurnTimes: {[key: string]: number} = {
+  const fuelBurnTimes: { [key: string]: number } = {
     stick: 100,
     wooden_slab: 150,
     sapling: 100,
@@ -71,7 +71,7 @@ interface IGetFuelSeconds {
   packet: FurnacePacket;
 }
 
-const getFuelSeconds = ({furnace, packet}: IGetFuelSeconds): number => {
+const getFuelSeconds = ({ furnace, packet }: IGetFuelSeconds): number => {
   furnace.totalFuel = packet.totalFuel;
   furnace.totalFuelSeconds = ticksToSeconds(furnace.totalFuel);
   furnace.fuel = 0;
@@ -84,7 +84,7 @@ const getFuelSeconds = ({furnace, packet}: IGetFuelSeconds): number => {
   return furnace.fuelSeconds;
 };
 
-const getItemProgress = ({furnace, packet}: IGetFuelSeconds): number => {
+const getItemProgress = ({ furnace, packet }: IGetFuelSeconds): number => {
   furnace.totalProgress = packet.totalProgress;
   furnace.totalProgressSeconds = ticksToSeconds(furnace.totalProgress);
   furnace.progress = 0;
@@ -145,8 +145,8 @@ export const useFurnace = async (
     action: 'smelt',
   };
 
-  let {itemName, fuelName, count, action, signal, getStatsData, setStatsData} =
-    {...defaultOptions, ...options};
+  let { itemName, fuelName, count, action, signal, getStatsData, setStatsData } =
+    { ...defaultOptions, ...options };
   const smeltTime = 10;
 
   // return if itemName or fuelName is not string
@@ -164,7 +164,7 @@ export const useFurnace = async (
     );
   }
 
-  const closestItemName = findClosestItemName(bot, {name: itemName});
+  const closestItemName = findClosestItemName(bot, { name: itemName });
   if (!closestItemName) {
     return bot.emit(
       'alteraBotEndObservation',
@@ -172,7 +172,7 @@ export const useFurnace = async (
     );
   }
 
-  const closestFuelName = findClosestItemName(bot, {name: fuelName});
+  const closestFuelName = findClosestItemName(bot, { name: fuelName });
   if (!closestFuelName) {
     return bot.emit(
       'alteraBotEndObservation',
@@ -183,7 +183,7 @@ export const useFurnace = async (
   const NEARBY_DISTANCE = bot.nearbyBlockXZRange;
   const FURNACE_ID_BLOCK = mcData(bot.version).blocksByName.furnace.id;
   const FURNACE_ID_ITEM = mcData(bot.version).itemsByName.furnace.id;
-  const botInventory = getInventory(bot, {useItemNames: false});
+  const botInventory = getInventory(bot, { useItemNames: false });
 
   itemName = closestItemName; // update the item name to the closest matching name
   fuelName = closestFuelName; // update the fuel name to the closest matching name
@@ -285,8 +285,8 @@ export const useFurnace = async (
         Item smelting and fuel burning progress are both null due to packet update errors.
         The code block below is a temporary workaround to get the progress of the furnace.
         */
-    const furnaceInfo: {[key: string]: any} = {};
-    const furnaceInfoFunction = (packet: {[key: string]: any}) => {
+    const furnaceInfo: { [key: string]: any } = {};
+    const furnaceInfoFunction = (packet: { [key: string]: any }) => {
       furnaceInfo[packet.property] = packet.value;
     };
     bot._client.on('craft_progress_bar', furnaceInfoFunction);
@@ -299,8 +299,8 @@ export const useFurnace = async (
     });
     await bot.waitForTicks(1);
     bot._client.removeListener('craft_progress_bar', furnaceInfoFunction);
-    getFuelSeconds({furnace, packet: furnaceInfo as FurnacePacket});
-    getItemProgress({furnace, packet: furnaceInfo as FurnacePacket});
+    getFuelSeconds({ furnace, packet: furnaceInfo as FurnacePacket });
+    getItemProgress({ furnace, packet: furnaceInfo as FurnacePacket });
     console.log(`Current fuel progress: ${furnace.fuelSeconds}`);
     console.log(`Current item progress: ${furnace.progressSeconds}`);
     furnace.fuelSeconds.toFixed(1);
