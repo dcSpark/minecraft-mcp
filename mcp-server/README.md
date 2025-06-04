@@ -1,4 +1,4 @@
-# Altera Minecraft MCP Server
+# Fundamental Labs Minecraft MCP Server
 
 An MCP (Model Context Protocol) server that exposes Minecraft bot skills as tools that AI agents can call. Control Minecraft bots through standardized AI interfaces!
 
