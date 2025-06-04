@@ -1,5 +1,5 @@
 import minecraftData from 'minecraft-data';
-import {Bot} from 'mineflayer';
+import { Bot } from 'mineflayer';
 
 /**
  * Generate a list of craftable items based on the bot's inventory and nearby crafting stations.
@@ -45,19 +45,19 @@ export const generateCraftableItems = (bot: Bot): [string, string[]] => {
   const craftableItems = [];
 
   for (const recipe of allRecipes) {
-    const {id: resultId} = recipe[0].result as {id: number};
+    const { id: resultId } = recipe[0].result as { id: number };
     if (
       recipe.length &&
       mcData.items[resultId] &&
-      requirementsMetForRecipe(bot, {recipe: recipe[0]})
+      requirementsMetForRecipe(bot, { recipe: recipe[0] })
     ) {
       // like computeRequiresTable says, requiresTable SHOULD EXIST and I don't know why it doesn't
-      if (!recipe[0].requiresTable) {
-        recipe[0].requiresTable = computeRequiresTable(recipe[0]);
+      if (!(recipe[0] as any).requiresTable) {
+        (recipe[0] as any).requiresTable = computeRequiresTable(recipe[0]);
       }
       if (
         !(
-          recipe[0].requiresTable &&
+          (recipe[0] as any).requiresTable &&
           !nearbyCraftingStations.includes('crafting table')
         )
       ) {
@@ -98,7 +98,7 @@ const requirementsMetForRecipe = (
   bot: Bot,
   options: IRequirementsMetForRecipeOptions,
 ): boolean => {
-  const {recipe} = options;
+  const { recipe } = options;
   const mcData = minecraftData(bot.version);
   let cost: minecraftData.Ingredients =
     [] as unknown as minecraftData.Ingredients;
@@ -122,7 +122,7 @@ const requirementsMetForRecipe = (
   // false if not enough inventory to make all the ones that we want
   for (const i of Object.keys(sortedCost)) {
     const d: minecraftData.Item = mcData.items[parseInt(i)];
-    if (d && bot.inventory.count(d.id, d.metadata) - sortedCost[i] < 0)
+    if (d && bot.inventory.count(d.id, d.metadata as any) - sortedCost[i] < 0)
       return false;
   }
 

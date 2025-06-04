@@ -1,8 +1,8 @@
-import {Bot} from 'mineflayer';
+import { Bot } from 'mineflayer';
 
-import {ISkillServiceParams, ISkillParams} from '../../types/skillType.js';
-import {isSignalAborted, validateSkillParams} from '../index.js';
-import {navigateToLocation} from '../library/navigateToLocation.js';
+import { ISkillServiceParams, ISkillParams } from '../../types/skillType.js';
+import { isSignalAborted, validateSkillParams } from '../index.js';
+import { navigateToLocation } from '../library/navigateToLocation.js';
 
 /**
  * Makes the bot sleep in a nearby bed.
@@ -22,7 +22,7 @@ export const sleepInNearbyBed = async (
   const skillName = 'sleepInNearbyBed';
   const requiredParams: string[] = [];
   const isParamsValid = validateSkillParams(
-    {...serviceParams},
+    { ...serviceParams },
     requiredParams,
     skillName,
   );
@@ -42,7 +42,7 @@ export const sleepInNearbyBed = async (
     maxDistance: params.maxDistance ?? defaultParams.maxDistance,
     signal: serviceParams.signal,
   };
-  const {maxDistance, signal} = unpackedParams;
+  const { maxDistance, signal } = unpackedParams;
   const TIME_TO_FALL_ASLEEP_S = 10;
   const SLEEP_IN_TICKS = TIME_TO_FALL_ASLEEP_S * 20;
 
@@ -168,7 +168,7 @@ const checkOtherPlayersSleeping = (bot: Bot): string => {
   playerNames.forEach((name) => {
     const playerEntity = bot.players[name].entity;
     if (!(name == bot.username)) {
-      if (playerEntity && playerEntity.isSleeping) {
+      if (playerEntity && (playerEntity as any).isSleeping) {
         sleepingPlayers.push(name);
       } else {
         awakePlayers.push(name);

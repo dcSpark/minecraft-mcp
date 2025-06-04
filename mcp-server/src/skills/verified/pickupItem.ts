@@ -1,18 +1,18 @@
-import {Bot} from 'mineflayer';
+import { Bot } from 'mineflayer';
 
-import {ISkillServiceParams, ISkillParams} from '../../types/skillType.js';
-import {closest, distance} from 'fastest-levenshtein';
+import { ISkillServiceParams, ISkillParams } from '../../types/skillType.js';
+import { closest, distance } from 'fastest-levenshtein';
 import minecraftData from 'minecraft-data';
 import mineflayer_pathfinder from 'mineflayer-pathfinder';
-import {Vec3} from 'vec3';
+import { Vec3 } from 'vec3';
 
-import {isSignalAborted, validateSkillParams} from '../index.js';
-import {asyncwrap} from '../library/asyncwrap.js';
-import {findClosestItemName} from '../library/findClosestItemName.js';
-import {mineBlock} from '../library/mineBlock.js';
+import { isSignalAborted, validateSkillParams } from '../index.js';
+import { asyncwrap } from '../library/asyncwrap.js';
+import { findClosestItemName } from '../library/findClosestItemName.js';
+import { mineBlock } from '../library/mineBlock.js';
 
 const {
-  goals: {GoalBlock, GoalFollow, GoalNear},
+  goals: { GoalBlock, GoalFollow, GoalNear },
 } = mineflayer_pathfinder;
 
 /**
@@ -53,7 +53,7 @@ export const pickupItem = async (
     setStatsData: serviceParams.setStatsData,
     resetTimeout: serviceParams.resetTimeout,
   };
-  const {signal, itemName, getStatsData, setStatsData, resetTimeout} =
+  const { signal, itemName, getStatsData, setStatsData, resetTimeout } =
     unpackedParams;
   const mcData = minecraftData(bot.version);
   const SEARCH_DISTANCE = bot.nearbyEntityRadius;
@@ -62,7 +62,7 @@ export const pickupItem = async (
     return bot.emit('alteraBotEndObservation', 'itemName must be a string');
   }
 
-  const closestItemName = findClosestItemName(bot, {name: itemName});
+  const closestItemName = findClosestItemName(bot, { name: itemName });
   if (!closestItemName) {
     return bot.emit(
       'alteraBotEndObservation',
@@ -77,13 +77,13 @@ export const pickupItem = async (
     target = bot.nearestEntity(
       (entity) =>
         entity?.name?.toLowerCase() === 'item' &&
-        entity.metadata[10]?.blockId == mcData.itemsByName[closestItemName].id,
+        (entity.metadata[10] as any)?.blockId == mcData.itemsByName[closestItemName].id,
     );
   } else {
     target = bot.nearestEntity(
       (entity) =>
         entity?.name?.toLowerCase() === 'item' &&
-        entity.metadata[8]?.itemId == mcData.itemsByName[closestItemName].id,
+        (entity.metadata[8] as any)?.itemId == mcData.itemsByName[closestItemName].id,
     );
   }
 
@@ -136,7 +136,7 @@ export const pickupItem = async (
       const waitFn = async function () {
         return new Promise((r) => setTimeout(r, 50));
       };
-      await asyncwrap({func: waitFn, setStatsData, getStatsData});
+      await asyncwrap({ func: waitFn, setStatsData, getStatsData });
 
       // check signal for cancellation
       if (isSignalAborted(signal)) {
@@ -207,7 +207,7 @@ const compareInventories = (
   newMap.forEach((newCount, name) => {
     const oldCount = oldMap.get(name) || 0;
     if (newCount > oldCount) {
-      differences.push({name, count: newCount - oldCount});
+      differences.push({ name, count: newCount - oldCount });
     }
   });
 
@@ -222,7 +222,7 @@ const compareInventories = (
  */
 const getCollapsedItemCounts = (items: IInventoryItem[]): string => {
   const itemsMap = items.reduce(
-    (acc: {[key: string]: number}, item: IInventoryItem) => {
+    (acc: { [key: string]: number }, item: IInventoryItem) => {
       const itemName = item.name.replace(/_/g, ' ');
       if (!acc[itemName]) {
         acc[itemName] = 0;
@@ -265,7 +265,7 @@ const pickupItemAsBlock = async (
   bot: Bot,
   options: IPickupItemAsBlockParams,
 ): Promise<boolean> => {
-  const {itemName, setStatsData, getStatsData, searchDistance = 25} = options;
+  const { itemName, setStatsData, getStatsData, searchDistance = 25 } = options;
   const mcData = minecraftData(bot.version);
   const closestItemName = closest(
     itemName.toLowerCase(),
@@ -288,19 +288,19 @@ const pickupItemAsBlock = async (
         ),
       );
     };
-    await asyncwrap({func: goToFunc, setStatsData, getStatsData});
+    await asyncwrap({ func: goToFunc, setStatsData, getStatsData });
     // Adjust bot's aim to the block
     bot.lookAt(targetBlock.position.plus(new Vec3(0.5, 0.5, 0.5)), true);
     // Dig the block
     const digFunc = async function () {
       return bot.dig(targetBlock);
     };
-    await asyncwrap({func: digFunc, setStatsData, getStatsData});
+    await asyncwrap({ func: digFunc, setStatsData, getStatsData });
     // Wait for 1 second
     const waitFunc = async function () {
       return new Promise((resolve) => setTimeout(resolve, 1000));
     };
-    await asyncwrap({func: waitFunc, getStatsData, setStatsData});
+    await asyncwrap({ func: waitFunc, getStatsData, setStatsData });
     if (bot.pathfinder.isMoving()) {
       bot.pathfinder.stop();
     }
@@ -313,7 +313,7 @@ const pickupItemAsBlock = async (
         ),
       );
     };
-    await asyncwrap({func: goToFunc2, setStatsData, getStatsData});
+    await asyncwrap({ func: goToFunc2, setStatsData, getStatsData });
 
     return true;
   }

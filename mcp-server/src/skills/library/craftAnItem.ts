@@ -1,17 +1,17 @@
 import minecraftData from 'minecraft-data';
-import {Bot} from 'mineflayer';
+import { Bot } from 'mineflayer';
 import mineflayer_pathfinder from 'mineflayer-pathfinder';
-import {Recipe} from 'prismarine-recipe';
+import { Recipe } from 'prismarine-recipe';
 
-import {ISkillServiceParams} from '../../types/skillType.js';
-import {isSignalAborted} from '../index.js';
-import {asyncwrap} from './asyncwrap.js';
-import {findClosestItemName} from './findClosestItemName.js';
-import {getInventory} from './inventoryHelpers.js';
-import {updateCraftingInterface} from './updateCraftingInterface.js';
+import { ISkillServiceParams } from '../../types/skillType.js';
+import { isSignalAborted } from '../index.js';
+import { asyncwrap } from './asyncwrap.js';
+import { findClosestItemName } from './findClosestItemName.js';
+import { getInventory } from './inventoryHelpers.js';
+import { updateCraftingInterface } from './updateCraftingInterface.js';
 
 const {
-  goals: {GoalNear},
+  goals: { GoalNear },
 } = mineflayer_pathfinder;
 
 interface iCraftAnItemOptions {
@@ -35,7 +35,7 @@ export const craftAnItem = async (
   bot: Bot,
   options: iCraftAnItemOptions,
 ): Promise<[status: boolean, text: string]> => {
-  let {name, count, setStatsData, getStatsData, signal} = options;
+  let { name, count, setStatsData, getStatsData, signal } = options;
   const mcData = minecraftData(bot.version);
   if (count < 1) {
     return [false, `ERROR: You can't craft nothing!`];
@@ -95,7 +95,7 @@ export const craftAnItem = async (
     name = nameLower; // overriding the original name with the new name
   }
 
-  let closestItemName = findClosestItemName(bot, {name: nameLower});
+  let closestItemName = findClosestItemName(bot, { name: nameLower });
 
   // Find the closest item name from the input
   if (!closestItemName) {
@@ -152,7 +152,7 @@ export const craftAnItem = async (
     maxDistance: NEARBY_DISTANCE,
   });
 
-  let botInventory = getInventory(bot, {useItemNames: false});
+  let botInventory = getInventory(bot, { useItemNames: false });
   // console.log(botInventory);
 
   // if no nearby crafting table and item has no recipes that don't require a crafting table
@@ -207,7 +207,7 @@ export const craftAnItem = async (
           new GoalNear(tablePos.x, tablePos.y, tablePos.z, 3),
         );
       };
-      await asyncwrap({func: gotoFunc, setStatsData, getStatsData});
+      await asyncwrap({ func: gotoFunc, setStatsData, getStatsData });
       await bot.lookAt(tablePos.offset(0.5, 0.5, 0.5)); // Look at the crafting table
     }
 
@@ -236,7 +236,7 @@ export const craftAnItem = async (
         const craftFunc = async function () {
           return await bot.craft(craft, 1, nearbyCraftingTable);
         };
-        await asyncwrap({func: craftFunc, setStatsData, getStatsData});
+        await asyncwrap({ func: craftFunc, setStatsData, getStatsData });
         await bot.waitForTicks(1);
       }
       await bot.waitForTicks(20);
@@ -256,7 +256,7 @@ export const craftAnItem = async (
         const equipFunc = async function () {
           return bot.equip(item, 'hand');
         };
-        await asyncwrap({func: equipFunc, setStatsData, getStatsData});
+        await asyncwrap({ func: equipFunc, setStatsData, getStatsData });
       } else {
         console.error(
           `ERROR: Could not find ${intermediateItem.name} in inventory`,
@@ -314,7 +314,7 @@ const tryCraftItem = (
   bot: Bot,
   options: ITryCraftItemOptions,
 ): TryCraftItemReturnType => {
-  let {inventory, itemName, count, layer, craftingTable} = {...options};
+  let { inventory, itemName, count, layer, craftingTable } = { ...options };
   // let startTime = Date.now(); profiling - never showed more thant a few ms
   let crafts: RecipeTuple[] = [];
   const mcData = minecraftData(bot.version);
@@ -352,7 +352,7 @@ const tryCraftItem = (
     minRecipe = null;
     minRecipes = [];
     for (const recipe of recipes) {
-      recipe.missingItems = {};
+      (recipe as any).missingItems = {};
       let missingItems = 0;
       let missingItemsStr = '';
       const craftsRequired = Math.ceil(count / recipe.result.count); // number of times the recipe needs to be crafted to fulfill `count`
@@ -367,11 +367,11 @@ const tryCraftItem = (
         if (numInInventory === 0) {
           missingItems += requiredCount;
           missingItemsStr += ` ${requiredCount} more '${item.name}'`;
-          recipe.missingItems[`${item.name}`] = requiredCount;
+          (recipe as any).missingItems[`${item.name}`] = requiredCount;
         } else if (numInInventory < requiredCount) {
           const numMissing = requiredCount - numInInventory;
           missingItems += numMissing;
-          recipe.missingItems[`${item.name}`] = numMissing;
+          (recipe as any).missingItems[`${item.name}`] = numMissing;
           missingItemsStr += ` ${numMissing} more '${item.name}'`;
         }
       }
@@ -387,20 +387,20 @@ const tryCraftItem = (
       }
     }
 
-    if (craftingRetriesLeft === -1 && minRecipe.missingItems) {
-      craftingRetriesLeft = Object.keys(minRecipe.missingItems).length;
+    if (craftingRetriesLeft === -1 && (minRecipe as any).missingItems) {
+      craftingRetriesLeft = Object.keys((minRecipe as any).missingItems).length;
     }
     if (craftingRetriesLeft > 0) {
       for (const recipe of minRecipes) {
         let canCraftAll = true;
         let info = '';
         let materialCrafts: RecipeTuple[] = [];
-        for (const [item, count] of Object.entries(recipe.missingItems)) {
+        for (const [item, count] of Object.entries((recipe as any).missingItems)) {
           let currentCrafts = [];
           [canCraftAll, currentCrafts, info] = tryCraftItem(bot, {
             inventory,
             itemName: item,
-            count,
+            count: count as number,
             layer: layer + 1,
             craftingTable,
           });
@@ -432,7 +432,7 @@ const tryCraftItem = (
     if (minRecipes.length === 1) {
       // If there's a single "absolute min" recipe
       const minRecipe = minRecipes[0];
-      const itemsNeeded = Object.entries(minRecipe.missingItems).map(
+      const itemsNeeded = Object.entries((minRecipe as any).missingItems).map(
         ([itemName, numMissing]) => {
           return ` ${numMissing} more ${itemName.replace(/_/g, ' ')}`;
         },
@@ -446,7 +446,7 @@ const tryCraftItem = (
         (msg, recipe, index, array) => {
           recNumber += 1;
           for (const [itemName, numMissing] of Object.entries(
-            recipe.missingItems,
+            (recipe as any).missingItems,
           )) {
             msg += ` ${numMissing} more ${itemName.replace(/_/g, ' ')}`;
           }
@@ -512,7 +512,7 @@ interface IRemoveItemsFromInventory {
 const removeItemsFromInventory = (
   options: IRemoveItemsFromInventory,
 ): Record<string, number> => {
-  const {inventory, itemType, countToRemove} = {...options};
+  const { inventory, itemType, countToRemove } = { ...options };
   if (inventory?.[itemType]) {
     if (inventory[itemType] >= countToRemove) {
       inventory[itemType] -= countToRemove;
@@ -538,7 +538,7 @@ interface IAddItemsToInventory {
 const addItemsToInventory = (
   options: IAddItemsToInventory,
 ): Record<string, number> => {
-  const {inventory, itemType, count} = {...options};
+  const { inventory, itemType, count } = { ...options };
   if (inventory?.[itemType]) {
     inventory[itemType] += count;
   } else {
@@ -561,7 +561,7 @@ const findWoodInInventory = (bot: Bot): string | null => {
 
   let woodAmount = 0;
   let foundWood = null;
-  const botInventory = getInventory(bot, {useItemNames: false});
+  const botInventory = getInventory(bot, { useItemNames: false });
 
   // find the highest quantity of any type of wood in the inventory
   // check for each possible wood type in the inventory
@@ -597,7 +597,7 @@ const getMostOfInInventory = (bot: Bot, itemType: string) => {
 
   let most = 0;
   let item = null;
-  const botInventory = getInventory(bot, {useItemNames: false});
+  const botInventory = getInventory(bot, { useItemNames: false });
   for (const i of items) {
     const itemId = mcData.itemsByName[i].id;
     if (botInventory?.[itemId] && botInventory[itemId] > most) {
@@ -609,7 +609,7 @@ const getMostOfInInventory = (bot: Bot, itemType: string) => {
     'found most of ' + itemType + ' in inventory: ' + item + ' x' + most,
   );
 
-  return {itemName: item, amount: most};
+  return { itemName: item, amount: most };
 };
 
 
