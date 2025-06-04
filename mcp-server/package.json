@@ -1,5 +1,5 @@
 {
-    "name": "@altera-al/minecraft-mcp",
+    "name": "@fundamentallabs/minecraft-mcp",
     "version": "0.1.0",
     "description": "MCP (Model Context Protocol) server for Minecraft bot skills - Control Minecraft bots through AI agents",
     "keywords": [
@@ -9,21 +9,21 @@
         "bot",
         "ai",
         "model-context-protocol",
-        "fundamentallabs"
+        "FundamentalLabs"
     ],
-    "homepage": "https://github.com/altera-al/minecraft-mcp#readme",
+    "homepage": "https://github.com/FundamentalLabs/minecraft-mcp#readme",
     "bugs": {
-        "url": "https://github.com/altera-al/minecraft-mcp/issues"
+        "url": "https://github.com/FundamentalLabs/minecraft-mcp/issues"
     },
     "repository": {
         "type": "git",
-        "url": "git+https://github.com/altera-al/minecraft-mcp.git"
+        "url": "git+https://github.com/FundamentalLabs/minecraft-mcp.git"
     },
     "license": "MIT",
-    "author": "Your Name",
+    "author": "Fundamental Labs, Inc.",
     "type": "module",
     "bin": {
-        "altera-minecraft": "./dist/mcp-server.js"
+        "fl-minecraft": "./dist/mcp-server.js"
     },
     "files": [
         "dist",
