@@ -4,10 +4,11 @@ An MCP (Model Context Protocol) server that exposes Minecraft bot skills as tool
 
 ## Features
 
-- 🤖 **Full Bot Control** - Spawn and control Minecraft bots through AI agents
-- 🛠️ **26+ Built-in Skills** - Mining, crafting, combat, navigation, and more
-- 🔌 **MCP Compliant** - Works with any MCP-compatible AI client
-- 🎮 **Easy Integration** - Simple setup with npm
+- **Full Minecraft Control**: Connect AI agents to Minecraft servers and control bots
+- **26 Verified Skills**: Pre-built, tested skills for common Minecraft tasks
+- **Flexible Connection**: Connect to any Minecraft server with optional per-bot configuration
+- **Multi-Bot Support**: Manage multiple bots simultaneously
+- **MCP Standard**: Compatible with any MCP client (Claude Desktop, etc.)
 
 ## Installation
 
@@ -28,18 +29,16 @@ npm run build
 
 ## Usage
 
-### Running the MCP Server
+### Starting the Server
 
-If installed globally via npm:
-
-```bash
-minecraft-mcp -p 25565 -h localhost
-```
-
-If running from source:
+You can start the MCP server with optional default connection settings:
 
 ```bash
-node dist/mcp-server.js -p 25565 -h localhost
+# Start with no defaults (connection specified per bot)
+minecraft-mcp
+
+# Start with default connection settings
+minecraft-mcp -h play.example.com -p 25565
 ```
 
 ### Command Line Options
@@ -83,6 +82,13 @@ npx @modelcontextprotocol/inspector node dist/mcp-server.js -- -p 25565
 ### Bot Management
 
 - **joinGame** - Spawn a new bot into the Minecraft game
+  - `username` (required): Bot's username
+  - `host` (optional): Server host (defaults to 'localhost' or command line option)
+  - `port` (optional): Server port (defaults to 25565 or command line option)
+
+- **leaveGame** - Disconnect bot(s) from the game
+  - `username` (optional): Specific bot to disconnect
+  - `disconnectAll` (optional): Disconnect all bots if true
 
 ### Movement & Navigation
 

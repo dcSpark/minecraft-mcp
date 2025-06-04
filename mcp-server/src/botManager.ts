@@ -62,19 +62,32 @@ export class BotManager {
         return id;
     }
 
-    removeBot(id: string): void {
-        const botInstance = this.bots.get(id);
+    removeBot(idOrUsername: string): void {
+        // First try to find by ID
+        let botInstance = this.bots.get(idOrUsername);
+
+        // If not found by ID, search by username
+        if (!botInstance) {
+            for (const [id, instance] of this.bots) {
+                if (instance.username === idOrUsername) {
+                    botInstance = instance;
+                    idOrUsername = id; // Use the ID for deletion
+                    break;
+                }
+            }
+        }
+
         if (botInstance) {
-            console.error(`[BotManager] Removing bot '${botInstance.username}' with ID: ${id}`);
+            console.error(`[BotManager] Removing bot '${botInstance.username}' with ID: ${botInstance.id}`);
             try {
                 botInstance.bot.quit();
             } catch (error) {
                 // Bot might already be disconnected
             }
-            this.bots.delete(id);
+            this.bots.delete(idOrUsername);
 
             // Update active bot if needed
-            if (this.activeBotId === id) {
+            if (this.activeBotId === idOrUsername) {
                 const remainingBots = Array.from(this.bots.keys());
                 this.activeBotId = remainingBots.length > 0 ? remainingBots[0] : null;
                 console.error(`[BotManager] Active bot updated to: ${this.activeBotId}`);
@@ -110,6 +123,19 @@ export class BotManager {
 
     getAllBots(): BotInstance[] {
         return Array.from(this.bots.values());
+    }
+
+    getBotByUsername(username: string): BotWithLogger | null {
+        for (const instance of this.bots.values()) {
+            if (instance.username === username) {
+                return instance.bot;
+            }
+        }
+        return null;
+    }
+
+    getBotCount(): number {
+        return this.bots.size;
     }
 
     disconnectAll(): void {

@@ -15,10 +15,10 @@ import { createBot as mineflayerCreateBot } from 'mineflayer';
 import { loadSkills, SkillRegistry } from './skillRegistry.js';
 import { BotManager } from './botManager.js';
 
-// Parse command line arguments
+// Parse command line arguments (now optional)
 program
-    .option('-p, --port <port>', 'Minecraft server port', '25565')
-    .option('-h, --host <host>', 'Minecraft server host', 'localhost')
+    .option('-p, --port <port>', 'Default Minecraft server port')
+    .option('-h, --host <host>', 'Default Minecraft server host')
     .parse(process.argv);
 
 const options = program.opts();
@@ -62,9 +62,34 @@ server.setRequestHandler(ListToolsRequestSchema, async () => {
                     username: {
                         type: "string",
                         description: "The username for the bot"
+                    },
+                    host: {
+                        type: "string",
+                        description: "Minecraft server host (defaults to 'localhost' or command line option)"
+                    },
+                    port: {
+                        type: "number",
+                        description: "Minecraft server port (defaults to 25565 or command line option)"
                     }
                 },
                 required: ["username"]
+            }
+        },
+        {
+            name: "leaveGame",
+            description: "Disconnect a bot from the game",
+            inputSchema: {
+                type: "object",
+                properties: {
+                    username: {
+                        type: "string",
+                        description: "The username of the bot to disconnect"
+                    },
+                    disconnectAll: {
+                        type: "boolean",
+                        description: "If true, disconnect all bots and close all connections"
+                    }
+                }
             }
         }
     ];
@@ -86,12 +111,18 @@ server.setRequestHandler(CallToolRequestSchema, async (request: CallToolRequest)
     // Handle joinGame tool
     if (name === "joinGame") {
         try {
-            const { username } = args as { username: string };
+            const { username, host, port } = args as { username: string; host?: string; port?: number };
+
+            // Use provided values, fall back to command line options, then defaults
+            const serverHost = host || options.host || 'localhost';
+            const serverPort = port || (options.port ? parseInt(options.port) : 25565);
+
+            console.error(`[MCP] Attempting to spawn bot '${username}' on ${serverHost}:${serverPort}`);
 
             // Create a new bot
             const bot = mineflayerCreateBot({
-                host: options.host,
-                port: parseInt(options.port),
+                host: serverHost,
+                port: serverPort,
                 username: username
                 // Auto-detect version by not specifying it
             }) as any; // Type assertion to allow adding custom properties
@@ -163,7 +194,7 @@ server.setRequestHandler(CallToolRequestSchema, async (request: CallToolRequest)
             return {
                 content: [{
                     type: "text",
-                    text: `Bot '${username}' successfully joined the game. Bot ID: ${botId}`
+                    text: `Bot '${username}' successfully joined the game on ${serverHost}:${serverPort}. Bot ID: ${botId}`
                 }]
             };
         } catch (error) {
@@ -171,6 +202,50 @@ server.setRequestHandler(CallToolRequestSchema, async (request: CallToolRequest)
                 content: [{
                     type: "text",
                     text: `Failed to join game: ${error instanceof Error ? error.message : String(error)}`
+                }],
+                isError: true
+            };
+        }
+    }
+
+    // Handle leaveGame tool
+    if (name === "leaveGame") {
+        try {
+            const { username, disconnectAll } = args as { username?: string; disconnectAll?: boolean };
+
+            if (disconnectAll) {
+                const count = botManager.getBotCount();
+                botManager.disconnectAll();
+                return {
+                    content: [{
+                        type: "text",
+                        text: `Disconnected all ${count} bot(s) from the game.`
+                    }]
+                };
+            }
+
+            if (!username) {
+                throw new Error("Either 'username' or 'disconnectAll' must be specified");
+            }
+
+            const bot = botManager.getBotByUsername(username);
+            if (!bot) {
+                throw new Error(`No bot found with username '${username}'`);
+            }
+
+            botManager.removeBot(username);
+
+            return {
+                content: [{
+                    type: "text",
+                    text: `Bot '${username}' has been disconnected from the game.`
+                }]
+            };
+        } catch (error) {
+            return {
+                content: [{
+                    type: "text",
+                    text: `Failed to leave game: ${error instanceof Error ? error.message : String(error)}`
                 }],
                 isError: true
             };
@@ -212,7 +287,11 @@ server.setRequestHandler(CallToolRequestSchema, async (request: CallToolRequest)
 
 // Initialize and start the server
 async function main() {
-    console.error(`Starting MCP server for Minecraft on ${options.host}:${options.port}`);
+    const defaultHost = options.host || 'localhost';
+    const defaultPort = options.port || '25565';
+
+    console.error(`Starting MCP server for Minecraft`);
+    console.error(`Default connection: ${defaultHost}:${defaultPort} (can be overridden per bot)`);
 
     // Initialize skills
     await initializeSkills();
