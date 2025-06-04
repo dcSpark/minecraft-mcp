@@ -1,7 +1,7 @@
 import {Bot} from 'mineflayer';
-import {ISkillServiceParams, ISkillParams} from '../../types/skillType';
-import {validateSkillParams} from '../index';
-import {useFurnace} from '../library/useFurnace';
+import {ISkillServiceParams, ISkillParams} from '../../types/skillType.js';
+import {validateSkillParams} from '../index.js';
+import {useFurnace} from '../library/useFurnace.js';
 
 /**
  * Cook specified item(s) in Minecraft.
@@ -51,3 +51,5 @@ export const cookItem = async (
     setStatsData: serviceParams.setStatsData,
   });
 };
+
+

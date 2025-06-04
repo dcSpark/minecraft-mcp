@@ -3,8 +3,8 @@ import mineflayer_pathfinder from 'mineflayer-pathfinder';
 import {Vec3} from 'vec3';
 
 import {isSignalAborted} from '..';
-import {findClosestItemName} from './findClosestItemName';
-import {findClosestPlayerByName} from './findClosestPlayerByName';
+import {findClosestItemName} from './findClosestItemName.js';
+import {findClosestPlayerByName} from './findClosestPlayerByName.js';
 
 interface ITossItemTowardsPlayerOptions {
   playerName: string;
@@ -211,3 +211,5 @@ const checkInventoryForItem = (
   const item = bot.inventory.items().find((item) => item.name === itemName);
   return item && item.count >= neededQuantity;
 };
+
+

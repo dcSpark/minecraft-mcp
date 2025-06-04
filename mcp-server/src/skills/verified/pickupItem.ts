@@ -1,15 +1,15 @@
 import {Bot} from 'mineflayer';
 
-import {ISkillServiceParams, ISkillParams} from '../../types/skillType';
+import {ISkillServiceParams, ISkillParams} from '../../types/skillType.js';
 import {closest, distance} from 'fastest-levenshtein';
 import minecraftData from 'minecraft-data';
 import mineflayer_pathfinder from 'mineflayer-pathfinder';
 import {Vec3} from 'vec3';
 
-import {isSignalAborted, validateSkillParams} from '../index';
-import {asyncwrap} from '../library/asyncwrap';
-import {findClosestItemName} from '../library/findClosestItemName';
-import {mineBlock} from '../library/mineBlock';
+import {isSignalAborted, validateSkillParams} from '../index.js';
+import {asyncwrap} from '../library/asyncwrap.js';
+import {findClosestItemName} from '../library/findClosestItemName.js';
+import {mineBlock} from '../library/mineBlock.js';
 
 const {
   goals: {GoalBlock, GoalFollow, GoalNear},
@@ -320,3 +320,5 @@ const pickupItemAsBlock = async (
 
   return false;
 };
+
+

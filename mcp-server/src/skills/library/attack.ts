@@ -1,12 +1,12 @@
 import {Bot} from 'mineflayer';
 import {Entity} from 'prismarine-entity';
 
-import {ISkillServiceParams} from '../../types/skillType';
+import {ISkillServiceParams} from '../../types/skillType.js';
 import {isSignalAborted} from '..';
-import {asyncwrap} from './asyncwrap';
-import {findClosestPlayerByName} from './findClosestPlayerByName';
-import {navigateToLocation} from './navigateToLocation';
-import {autoEquipSword} from './pvpHelper';
+import {asyncwrap} from './asyncwrap.js';
+import {findClosestPlayerByName} from './findClosestPlayerByName.js';
+import {navigateToLocation} from './navigateToLocation.js';
+import {autoEquipSword} from './pvpHelper.js';
 
 interface IAttackOptions {
   signal: AbortSignal;
@@ -289,3 +289,5 @@ const findTarget = (bot: Bot, options: IFindTargetOptions): Entity | null => {
 
   return target;
 };
+
+

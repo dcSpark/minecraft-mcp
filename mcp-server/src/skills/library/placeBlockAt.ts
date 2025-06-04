@@ -2,8 +2,8 @@ import {Bot} from 'mineflayer';
 import {Block} from 'prismarine-block';
 import {Vec3} from 'vec3';
 
-import {ISkillServiceParams} from '../../types/skillType';
-import {asyncwrap} from './asyncwrap';
+import {ISkillServiceParams} from '../../types/skillType.js';
+import {asyncwrap} from './asyncwrap.js';
 
 interface IPlaceBlockAtOptions {
   targetPosition: Vec3;
@@ -65,3 +65,5 @@ export const placeBlockAt = async (
     );
   }
 };
+
+

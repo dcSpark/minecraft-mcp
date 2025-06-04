@@ -3,10 +3,10 @@ import {Bot} from 'mineflayer';
 import {goals} from 'mineflayer-pathfinder';
 import {Vec3} from 'vec3';
 
-import {ISkillServiceParams} from '../../types/skillType';
-import {asyncwrap} from './asyncwrap';
-import {findClosestItemName} from './findClosestItemName';
-import {placeBlockAt} from './placeBlockAt';
+import {ISkillServiceParams} from '../../types/skillType.js';
+import {asyncwrap} from './asyncwrap.js';
+import {findClosestItemName} from './findClosestItemName.js';
+import {placeBlockAt} from './placeBlockAt.js';
 
 const {GoalPlaceBlock} = goals;
 
@@ -201,3 +201,5 @@ export const placeBlockAtCoordinates = async (
     return false;
   }
 };
+
+

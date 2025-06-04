@@ -1,7 +1,7 @@
 import {Bot} from 'mineflayer';
-import {ISkillServiceParams, ISkillParams} from '../../types/skillType';
-import {validateSkillParams} from '../index';
-import {tossItemTowardsPlayer} from '../library/tossItemTowardsPlayer';
+import {ISkillServiceParams, ISkillParams} from '../../types/skillType.js';
+import {validateSkillParams} from '../index.js';
+import {tossItemTowardsPlayer} from '../library/tossItemTowardsPlayer.js';
 
 /**
  * Give an item or items from your inventory to someone.
@@ -52,3 +52,5 @@ export const giveItemToSomeone = async (
     signal: serviceParams.signal,
   });
 };
+
+

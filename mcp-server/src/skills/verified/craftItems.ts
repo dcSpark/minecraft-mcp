@@ -1,9 +1,9 @@
 import {Bot} from 'mineflayer';
 
-import {ISkillServiceParams, ISkillParams} from '../../types/skillType';
-import {validateSkillParams} from '../index';
-import {craftAnItem} from '../library/craftAnItem';
-import {updateCraftingInterface} from '../library/updateCraftingInterface';
+import {ISkillServiceParams, ISkillParams} from '../../types/skillType.js';
+import {validateSkillParams} from '../index.js';
+import {craftAnItem} from '../library/craftAnItem.js';
+import {updateCraftingInterface} from '../library/updateCraftingInterface.js';
 
 /**
  * Craft a single item immediately or look at all the items you can craft before crafting.
@@ -83,3 +83,5 @@ export const craftItems = async (
     }
   }
 };
+
+

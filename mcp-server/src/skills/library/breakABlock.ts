@@ -1,8 +1,8 @@
 import {Bot} from 'mineflayer';
 import {Vec3} from 'vec3';
 
-import {ISkillServiceParams} from '../../types/skillType';
-import {asyncwrap} from './asyncwrap';
+import {ISkillServiceParams} from '../../types/skillType.js';
+import {asyncwrap} from './asyncwrap.js';
 
 interface IBreakABlockOptions {
   x: number;
@@ -47,3 +47,5 @@ export const breakABlock = async (
   });
   bot.emit('alteraBotTextObservation', `${results}`);
 };
+
+

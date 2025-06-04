@@ -1,4 +1,4 @@
-import {ISkillServiceParams} from '../../types/skillType';
+import {ISkillServiceParams} from '../../types/skillType.js';
 
 interface IAsyncwrapOptions {
   func: Function;
@@ -27,3 +27,5 @@ export const asyncwrap = async (options: IAsyncwrapOptions): Promise<any> => {
 
   return result;
 };
+
+

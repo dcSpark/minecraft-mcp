@@ -3,7 +3,7 @@ import mineflayer_pathfinder from 'mineflayer-pathfinder';
 import {Vec3} from 'vec3';
 
 import {isSignalAborted} from '..';
-import {teleportToLocation} from './teleportToLocation';
+import {teleportToLocation} from './teleportToLocation.js';
 
 const {
   Movements,
@@ -348,3 +348,5 @@ const getIntermediateDestination = (
   // console.log(`updated location is: ${closerLocation.x}, ${closerLocation.y}, ${closerLocation.z}  `)
   return closerLocation;
 };
+
+

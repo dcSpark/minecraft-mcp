@@ -38,3 +38,5 @@ export const autoEquipSword = (bot: Bot): void => {
     console.log('No sword found in inventory.');
   }
 };
+
+

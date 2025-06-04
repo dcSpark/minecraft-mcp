@@ -1,9 +1,9 @@
 
-import {ISkillServiceParams, ISkillParams} from '../../types/skillType';
-import {useFurnace} from '../library/useFurnace';
+import {ISkillServiceParams, ISkillParams} from '../../types/skillType.js';
+import {useFurnace} from '../library/useFurnace.js';
 import {Bot} from 'mineflayer';
 
-import {validateSkillParams} from '../index';
+import {validateSkillParams} from '../index.js';
 
 /**
  * Smelt specified item(s) in Minecraft.
@@ -59,3 +59,5 @@ export const smeltItem = async (
     setStatsData,
   });
 };
+
+

@@ -1,10 +1,10 @@
 import {Bot} from 'mineflayer';
 
-import {ISkillServiceParams, ISkillParams} from '../../types/skillType';
-import {validateSkillParams} from '../index';
-import {asyncwrap} from '../library/asyncwrap';
-import {findClosestItemName} from '../library/findClosestItemName';
-import {tossItemTowardsPlayer} from '../library/tossItemTowardsPlayer';
+import {ISkillServiceParams, ISkillParams} from '../../types/skillType.js';
+import {validateSkillParams} from '../index.js';
+import {asyncwrap} from '../library/asyncwrap.js';
+import {findClosestItemName} from '../library/findClosestItemName.js';
+import {tossItemTowardsPlayer} from '../library/tossItemTowardsPlayer.js';
 /**
  * Drops a specified item from the inventory on the ground.
  * @param {Object} bot - The Mineflayer bot instance.
@@ -108,3 +108,5 @@ const countItems = (bot: Bot, itemName: string) => {
     return item.name === itemName ? total + item.count : total;
   }, 0);
 };
+
+

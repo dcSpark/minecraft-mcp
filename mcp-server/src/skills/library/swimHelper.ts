@@ -1,8 +1,8 @@
 import { Bot } from 'mineflayer';
 import { Vec3 } from 'vec3';
 
-import { ISkillServiceParams } from '../../types/skillType';
-import { asyncwrap } from './asyncwrap';
+import { ISkillServiceParams } from '../../types/skillType.js';
+import { asyncwrap } from './asyncwrap.js';
 
 // Simple coordinate interface
 interface ICoordinate {
@@ -154,3 +154,5 @@ export async function findLand(
   console.log('No land found within search range.');
   return null; // Returns null if no land is found
 }
+
+

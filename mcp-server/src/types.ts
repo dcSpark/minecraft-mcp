@@ -1,14 +1,49 @@
 import { Bot } from 'mineflayer';
 import { Pathfinder, Movements } from 'mineflayer-pathfinder';
 
-// Extend the Bot type to include our custom logger and plugin properties
+// Custom bot events that skills emit
+declare module 'mineflayer' {
+    interface BotEvents {
+        alteraBotEndObservation: (message: string) => void;
+        alteraBotTextObservation: (message: string) => void;
+        alteraBotStartObservation: (message: string) => void;
+    }
+
+    interface Bot {
+        // Custom properties added to bot
+        exploreChunkSize: number;
+        knownChunks: Record<string, any>;
+        currentSkillCode: string;
+        currentSkillData: Record<string, any>;
+
+        // Constants
+        nearbyBlockXZRange: number;
+        nearbyBlockYRange: number;
+        nearbyPlayerRadius: number;
+        hearingRadius: number;
+        nearbyEntityRadius: number;
+
+        // Movements from pathfinder plugin
+        Movements?: any;
+    }
+
+    interface Entity {
+        // Custom properties on entities
+        isSleeping?: boolean;
+    }
+}
+
+// Logger interface
+export interface Logger {
+    info: (message: string) => void;
+    error: (message: string) => void;
+    warn: (message: string) => void;
+    debug: (message: string) => void;
+}
+
+// Bot with logger
 export interface BotWithLogger extends Bot {
-    logger: {
-        info: (message: string) => void;
-        error: (message: string) => void;
-        warn: (message: string) => void;
-        debug: (message: string) => void;
-    };
+    logger: Logger;
     // Pathfinder plugin
     pathfinder: Pathfinder;
     // PVP plugin 
@@ -20,14 +55,16 @@ export interface BotWithLogger extends Bot {
     // Add other custom properties that the skills expect
     lastDanceTime?: number;
     Movements?: typeof Movements; // Constructor for creating movement configurations
-    exploreChunkSize?: number;
-    knownChunks?: Record<string, any>;
-    currentSkillCode?: string;
-    currentSkillData?: any;
-    // Constants used by skills
-    nearbyBlockXZRange?: number;
-    nearbyBlockYRange?: number;
-    nearbyPlayerRadius?: number;
-    hearingRadius?: number;
-    nearbyEntityRadius?: number;
+}
+
+// Custom furnace properties
+declare module 'mineflayer' {
+    interface Furnace {
+        totalFuel?: number;
+        totalFuelSeconds?: number;
+        fuelSeconds?: number;
+        totalProgress?: number;
+        totalProgressSeconds?: number;
+        progressSeconds?: number;
+    }
 } 

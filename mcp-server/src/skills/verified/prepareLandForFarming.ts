@@ -2,15 +2,15 @@ import minecraftData from 'minecraft-data';
 import {Bot} from 'mineflayer';
 import mineflayer_pathfinder from 'mineflayer-pathfinder';
 
-import {ISkillServiceParams, ISkillParams} from '../../types/skillType';
-import {navigateToLocation} from '../library/navigateToLocation';
+import {ISkillServiceParams, ISkillParams} from '../../types/skillType.js';
+import {navigateToLocation} from '../library/navigateToLocation.js';
 import {Block} from 'prismarine-block';
 import {Vec3} from 'vec3';
 
-import {isSignalAborted, validateSkillParams} from '../index';
-import {placeBlock} from '../library/placeBlock';
-import {plantSeedsOnFarmland} from '../library/plantSeedsOnFarmland';
-import {tillLandToFarmland} from '../library/tillLandToFarmland';
+import {isSignalAborted, validateSkillParams} from '../index.js';
+import {placeBlock} from '../library/placeBlock.js';
+import {plantSeedsOnFarmland} from '../library/plantSeedsOnFarmland.js';
+import {tillLandToFarmland} from '../library/tillLandToFarmland.js';
 
 const {Movements} = mineflayer_pathfinder;
 /**
@@ -347,3 +347,5 @@ async function findExpandableWater(
 
   return water;
 }
+
+

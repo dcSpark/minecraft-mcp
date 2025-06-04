@@ -1,15 +1,15 @@
 import minecraftData from 'minecraft-data';
 import {Bot, Furnace} from 'mineflayer';
 
-import {ISkillServiceParams, ISkillParams} from '../../types/skillType';
-import {isInventoryFull} from '../library/inventoryHelpers';
-import {ticksToSeconds} from '../library/useFurnace';
+import {ISkillServiceParams, ISkillParams} from '../../types/skillType.js';
+import {isInventoryFull} from '../library/inventoryHelpers.js';
+import {ticksToSeconds} from '../library/useFurnace.js';
 import mineflayer_pathfinder from 'mineflayer-pathfinder';
 import {Block} from 'prismarine-block';
 
-import {isSignalAborted, validateSkillParams} from '../index';
-import {asyncwrap} from '../library/asyncwrap';
-import {cancelableMove} from '../library/navigateToLocation';
+import {isSignalAborted, validateSkillParams} from '../index.js';
+import {asyncwrap} from '../library/asyncwrap.js';
+import {cancelableMove} from '../library/navigateToLocation.js';
 const {
   goals: {GoalNear},
 } = mineflayer_pathfinder;
@@ -333,3 +333,5 @@ const interrupt_message_accumulated_items = (endMessage: string) => {
   const something_else_message = `You decided to do something else and stopped retrieving items from furnaces nearby.`;
   return `${endMessage} Then, ${something_else_message}`;
 };
+
+

@@ -1,7 +1,7 @@
 import {Bot} from 'mineflayer';
 
-import {ISkillServiceParams, ISkillParams} from '../../types/skillType';
-import {isSignalAborted, validateSkillParams} from '../index';
+import {ISkillServiceParams, ISkillParams} from '../../types/skillType.js';
+import {isSignalAborted, validateSkillParams} from '../index.js';
 
 /**
  * Makes the bot sleep in a nearby bed.
@@ -58,3 +58,5 @@ export const rest = async (
   }
   return bot.emit('alteraBotEndObservation', `You finished resting.`);
 };
+
+

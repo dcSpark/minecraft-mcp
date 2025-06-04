@@ -2,8 +2,8 @@ import {Bot} from 'mineflayer';
 import {goals} from 'mineflayer-pathfinder';
 import {Vec3} from 'vec3';
 
-import {ISkillServiceParams} from '../../types/skillType';
-import {asyncwrap} from './asyncwrap';
+import {ISkillServiceParams} from '../../types/skillType.js';
+import {asyncwrap} from './asyncwrap.js';
 const {GoalLookAtBlock} = goals;
 
 interface INavigateToChestOptions {
@@ -45,3 +45,5 @@ export const navigateToChest = async (
     getStatsData,
   });
 };
+
+

@@ -1,12 +1,12 @@
 import {Bot} from 'mineflayer';
 
-import {ISkillServiceParams, ISkillParams} from '../../types/skillType';
+import {ISkillServiceParams, ISkillParams} from '../../types/skillType.js';
 import {closest, distance} from 'fastest-levenshtein';
 import minecraftData from 'minecraft-data';
 
-import {validateSkillParams} from '../index';
-import {findClosestItemName} from '../library/findClosestItemName';
-import {navigateToLocation} from '../library/navigateToLocation';
+import {validateSkillParams} from '../index.js';
+import {findClosestItemName} from '../library/findClosestItemName.js';
+import {navigateToLocation} from '../library/navigateToLocation.js';
 
 /**
  * Use an equipped item on an entity.
@@ -332,3 +332,5 @@ export const useItemOnBlock = async (
     `You have successfuly finished using ${itemName} on ${blockName}.`,
   );
 };
+
+

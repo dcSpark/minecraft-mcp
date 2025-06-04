@@ -1,6 +1,6 @@
 import {Bot} from 'mineflayer';
 
-import {generateCraftableItems} from './generateCraftableItems';
+import {generateCraftableItems} from './generateCraftableItems.js';
 
 /**
  * Update the crafting interface
@@ -19,3 +19,5 @@ export const updateCraftingInterface = (bot: Bot): void => {
   };
   bot.setInterface(interfaceObject);
 };
+
+

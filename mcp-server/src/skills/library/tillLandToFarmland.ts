@@ -2,8 +2,8 @@ import minecraftData from 'minecraft-data';
 import {Bot} from 'mineflayer';
 import {Block} from 'prismarine-block';
 
-import {ISkillServiceParams} from '../../types/skillType';
-import {asyncwrap} from './asyncwrap';
+import {ISkillServiceParams} from '../../types/skillType.js';
+import {asyncwrap} from './asyncwrap.js';
 
 interface ITillLandToFarmlandOptions {
   targetBlock: Block;
@@ -92,3 +92,5 @@ export const tillLandToFarmland = async (
     // bot.emit('alteraBotTextObservation', 'The target block is neither dirt nor grass.');
   }
 };
+
+

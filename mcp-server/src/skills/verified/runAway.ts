@@ -1,13 +1,13 @@
 import {Bot} from 'mineflayer';
 
-import {ISkillServiceParams, ISkillParams} from '../../types/skillType';
+import {ISkillServiceParams, ISkillParams} from '../../types/skillType.js';
 import {goals} from 'mineflayer-pathfinder';
 import {Entity} from 'prismarine-entity';
 import {Vec3} from 'vec3';
 
-import {isSignalAborted, validateSkillParams} from '../index';
-import {findClosestPlayerByName} from '../library/findClosestPlayerByName';
-import {cancelableMove} from '../library/navigateToLocation';
+import {isSignalAborted, validateSkillParams} from '../index.js';
+import {findClosestPlayerByName} from '../library/findClosestPlayerByName.js';
+import {cancelableMove} from '../library/navigateToLocation.js';
 
 const {GoalXZ} = goals;
 
@@ -177,3 +177,5 @@ export const runAway = async (
   // console.log(`Nearby hostile mobs: ${hostileMobNames.join(', ')}`);
   return bot.emit('alteraBotEndObservation', `You have finished running away!`);
 };
+
+

@@ -1,11 +1,11 @@
 import {Bot} from 'mineflayer';
 
-import {ISkillServiceParams, ISkillParams} from '../../types/skillType';
-import {isSignalAborted, validateSkillParams} from '../index';
-import {asyncwrap} from '../library/asyncwrap';
-import {findAChest, findNearbyChests} from '../library/findAChest';
-import {navigateToLocation} from '../library/navigateToLocation';
-import {updateChestInterface} from '../library/updateChestInterface';
+import {ISkillServiceParams, ISkillParams} from '../../types/skillType.js';
+import {isSignalAborted, validateSkillParams} from '../index.js';
+import {asyncwrap} from '../library/asyncwrap.js';
+import {findAChest, findNearbyChests} from '../library/findAChest.js';
+import {navigateToLocation} from '../library/navigateToLocation.js';
+import {updateChestInterface} from '../library/updateChestInterface.js';
 
 /**
  * Opens the closest nearby chest that is currently unopened and presents its inventory to the agent
@@ -102,3 +102,5 @@ export const openNearbyChest = async (
     );
   }
 };
+
+

@@ -1,10 +1,10 @@
 import { Bot, Chest } from 'mineflayer';
 
-import { ISkillServiceParams } from '../../types/skillType';
-import { asyncwrap } from './asyncwrap';
-import { exitInterface } from './exitInterface';
-import { findClosestItemName } from './findClosestItemName';
-import { isInventoryFull } from './inventoryHelpers';
+import { ISkillServiceParams } from '../../types/skillType.js';
+import { asyncwrap } from './asyncwrap.js';
+import { exitInterface } from './exitInterface.js';
+import { findClosestItemName } from './findClosestItemName.js';
+import { isInventoryFull } from './inventoryHelpers.js';
 
 type ItemToRetrieve = [string, number | null];
 
@@ -247,3 +247,5 @@ export const retrieveSpecificItemFromChest = async (
     return [false, item];
   }
 };
+
+

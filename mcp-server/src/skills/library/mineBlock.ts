@@ -3,12 +3,12 @@ import minecraftData from 'minecraft-data';
 import {Bot} from 'mineflayer';
 import mineflayer_pathfinder from 'mineflayer-pathfinder';
 
-import {ISkillServiceParams} from '../../types/skillType';
+import {ISkillServiceParams} from '../../types/skillType.js';
 import {isSignalAborted} from '..';
-import {asyncwrap} from './asyncwrap';
-import {blockHasNearbyAir} from './blockHasNearbyAir';
-import {exploreNearby} from './exploreNearby';
-import {cancelableMove} from './navigateToLocation';
+import {asyncwrap} from './asyncwrap.js';
+import {blockHasNearbyAir} from './blockHasNearbyAir.js';
+import {exploreNearby} from './exploreNearby.js';
+import {cancelableMove} from './navigateToLocation.js';
 
 const {
   Movements,
@@ -613,3 +613,5 @@ const canBotMineItem = async (
 
   return false;
 };
+
+

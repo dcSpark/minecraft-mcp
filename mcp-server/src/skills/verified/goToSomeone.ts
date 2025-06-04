@@ -1,7 +1,7 @@
 import {Bot} from 'mineflayer';
-import {ISkillServiceParams, ISkillParams} from '../../types/skillType';
-import {validateSkillParams} from '../index';
-import {goToPerson} from '../library/goToPerson';
+import {ISkillServiceParams, ISkillParams} from '../../types/skillType.js';
+import {validateSkillParams} from '../index.js';
+import {goToPerson} from '../library/goToPerson.js';
 
 /**
  *  Goes to someone to get near them or follow them.
@@ -49,3 +49,5 @@ export const goToSomeone = async (
     signal: serviceParams.signal,
   });
 };
+
+

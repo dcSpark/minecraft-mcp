@@ -2,7 +2,7 @@ import {Bot} from 'mineflayer';
 import mineflayer_pathfinder from 'mineflayer-pathfinder';
 import {Vec3} from 'vec3';
 
-import {cancelableMove} from './navigateToLocation';
+import {cancelableMove} from './navigateToLocation.js';
 
 interface IExploreNearbyOptions {
   signal?: AbortSignal;
@@ -122,3 +122,5 @@ const findSuitableSurfaceHeight = async (
 
   return null;
 };
+
+

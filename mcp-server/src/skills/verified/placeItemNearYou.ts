@@ -5,12 +5,12 @@ import {Block} from 'prismarine-block';
 import {iterators} from 'prismarine-world';
 import {Vec3} from 'vec3';
 
-import {ISkillServiceParams, ISkillParams} from '../../types/skillType';
-import {validateSkillParams} from '../index';
-import {asyncwrap} from '../library/asyncwrap';
-import {findClosestItemName} from '../library/findClosestItemName';
-import {placeBlock} from '../library/placeBlock';
-import {tossItemTowardsPlayer} from '../library/tossItemTowardsPlayer';
+import {ISkillServiceParams, ISkillParams} from '../../types/skillType.js';
+import {validateSkillParams} from '../index.js';
+import {asyncwrap} from '../library/asyncwrap.js';
+import {findClosestItemName} from '../library/findClosestItemName.js';
+import {placeBlock} from '../library/placeBlock.js';
+import {tossItemTowardsPlayer} from '../library/tossItemTowardsPlayer.js';
 
 const OctahedronIterator = iterators.OctahedronIterator;
 
@@ -276,3 +276,5 @@ function isEntityAtPosition(
     return entityPos.equals(position);
   });
 }
+
+

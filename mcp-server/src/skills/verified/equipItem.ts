@@ -1,11 +1,11 @@
 import {Bot, EquipmentDestination} from 'mineflayer';
 
-import {ISkillServiceParams, ISkillParams} from '../../types/skillType';
+import {ISkillServiceParams, ISkillParams} from '../../types/skillType.js';
 import minecraftData from 'minecraft-data';
 
-import {validateSkillParams} from '../index';
-import {asyncwrap} from '../library/asyncwrap';
-import {findClosestItemName} from '../library/findClosestItemName';
+import {validateSkillParams} from '../index.js';
+import {asyncwrap} from '../library/asyncwrap.js';
+import {findClosestItemName} from '../library/findClosestItemName.js';
 
 /**
  * Equips an item by name.
@@ -119,3 +119,5 @@ const getEquipDestination = (itemName: string): EquipmentDestination => {
   if (itemName.includes('shield')) return 'off-hand';
   return 'hand'; // Default to hand for items that are not armor
 };
+
+

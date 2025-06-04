@@ -169,3 +169,5 @@ const computeRequiresTable = (recipe: minecraftData.Recipe): boolean => {
 
   return spaceLeft < 0;
 };
+
+

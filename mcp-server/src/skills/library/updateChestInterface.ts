@@ -2,9 +2,9 @@ import {Bot, Chest} from 'mineflayer';
 import {Item} from 'prismarine-item';
 import {Vec3} from 'vec3';
 
-import {ISkillServiceParams} from '../../types/skillType';
-import {asyncwrap} from './asyncwrap';
-import {findAChest} from './findAChest';
+import {ISkillServiceParams} from '../../types/skillType.js';
+import {asyncwrap} from './asyncwrap.js';
+import {findAChest} from './findAChest.js';
 
 interface IUpdateChestInterfaceOptions {
   chestPosition?: Vec3;
@@ -89,3 +89,5 @@ export const updateChestInterface = async (
     bot.updateInterface(interfaceToSet);
   }
 };
+
+

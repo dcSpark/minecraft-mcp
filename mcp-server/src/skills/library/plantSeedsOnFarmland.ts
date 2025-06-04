@@ -3,9 +3,9 @@ import {Bot} from 'mineflayer';
 import mineflayer_pathfinder from 'mineflayer-pathfinder';
 import {Vec3} from 'vec3';
 
-import {ISkillServiceParams} from '../../types/skillType';
-import {asyncwrap} from './asyncwrap';
-import {navigateToLocation} from './navigateToLocation';
+import {ISkillServiceParams} from '../../types/skillType.js';
+import {asyncwrap} from './asyncwrap.js';
+import {navigateToLocation} from './navigateToLocation.js';
 
 const {Movements} = mineflayer_pathfinder;
 
@@ -164,3 +164,5 @@ export const plantSeedsOnFarmland = async (
     );
   }
 };
+
+

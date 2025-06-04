@@ -1,9 +1,9 @@
 import {Bot} from 'mineflayer';
 
-import {ISkillServiceParams, ISkillParams} from '../../types/skillType';
-import {validateSkillParams} from '../index';
-import {goToPerson} from '../library/goToPerson';
-import {navigateToLocation} from '../library/navigateToLocation';
+import {ISkillServiceParams, ISkillParams} from '../../types/skillType.js';
+import {validateSkillParams} from '../index.js';
+import {goToPerson} from '../library/goToPerson.js';
+import {navigateToLocation} from '../library/navigateToLocation.js';
 
 /**
  * Go to the specified coordinates or go to someone.
@@ -68,3 +68,5 @@ export const goToKnownLocation = async (
     });
   }
 };
+
+

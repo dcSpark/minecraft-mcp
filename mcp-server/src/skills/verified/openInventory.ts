@@ -1,7 +1,7 @@
 import {Bot} from 'mineflayer';
 
-import {ISkillServiceParams, ISkillParams} from '../../types/skillType';
-import {validateSkillParams} from '../index';
+import {ISkillServiceParams, ISkillParams} from '../../types/skillType.js';
+import {validateSkillParams} from '../index.js';
 
 /**
  * Opens your inventory
@@ -45,3 +45,5 @@ export const openInventory = async (
   bot.emit('alteraBotEndObservation', logMessage);
   return true;
 };
+
+

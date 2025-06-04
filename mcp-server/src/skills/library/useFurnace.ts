@@ -3,11 +3,11 @@ import mcData from 'minecraft-data';
 import {Bot} from 'mineflayer';
 import mineflayer_pathfinder from 'mineflayer-pathfinder';
 
-import {ISkillServiceParams} from '../../types/skillType';
+import {ISkillServiceParams} from '../../types/skillType.js';
 import {isSignalAborted} from '..';
-import {asyncwrap} from './asyncwrap';
-import {findClosestItemName} from './findClosestItemName';
-import {getInventory} from './inventoryHelpers';
+import {asyncwrap} from './asyncwrap.js';
+import {findClosestItemName} from './findClosestItemName.js';
+import {getInventory} from './inventoryHelpers.js';
 
 const {
   goals: {GoalNear},
@@ -509,3 +509,5 @@ export const useFurnace = async (
     );
   }
 };
+
+

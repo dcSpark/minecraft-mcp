@@ -110,3 +110,5 @@ export const findMissingItems = (
 export const isInventoryFull = (bot: Bot): boolean => {
   return bot.inventory.items().length == 36;
 };
+
+

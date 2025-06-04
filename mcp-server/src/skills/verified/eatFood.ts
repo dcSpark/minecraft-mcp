@@ -1,8 +1,8 @@
 import {Bot} from 'mineflayer';
 
-import {ISkillServiceParams, ISkillParams} from '../../types/skillType';
-import {asyncwrap} from '../library/asyncwrap';
-import {validateSkillParams} from '../index';
+import {ISkillServiceParams, ISkillParams} from '../../types/skillType.js';
+import {asyncwrap} from '../library/asyncwrap.js';
+import {validateSkillParams} from '../index.js';
 
 /**
  * Eat any food available in the bot's inventory.
@@ -105,3 +105,5 @@ export const eatFood = async (
     `You tried to eat but you have no food to eat!`,
   );
 };
+
+

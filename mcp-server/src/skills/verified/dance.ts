@@ -1,10 +1,10 @@
 import {Bot} from 'mineflayer';
 
-import {ISkillServiceParams, ISkillParams} from '../../types/skillType';
+import {ISkillServiceParams, ISkillParams} from '../../types/skillType.js';
 import {goals, Movements} from 'mineflayer-pathfinder';
 import {Vec3} from 'vec3';
 
-import {validateSkillParams} from '../index';
+import {validateSkillParams} from '../index.js';
 const {GoalXZ} = goals;
 
 /**
@@ -195,3 +195,5 @@ const walk = async (bot: Bot, position: Vec3) => {
   const goal = new GoalXZ(position.x, position.z);
   await bot.pathfinder.goto(goal);
 };
+
+

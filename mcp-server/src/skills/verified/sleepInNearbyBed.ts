@@ -1,8 +1,8 @@
 import {Bot} from 'mineflayer';
 
-import {ISkillServiceParams, ISkillParams} from '../../types/skillType';
-import {isSignalAborted, validateSkillParams} from '../index';
-import {navigateToLocation} from '../library/navigateToLocation';
+import {ISkillServiceParams, ISkillParams} from '../../types/skillType.js';
+import {isSignalAborted, validateSkillParams} from '../index.js';
+import {navigateToLocation} from '../library/navigateToLocation.js';
 
 /**
  * Makes the bot sleep in a nearby bed.
@@ -182,3 +182,5 @@ const checkOtherPlayersSleeping = (bot: Bot): string => {
     return `ERROR: You don't know why you did not sleep, because it is neither you interrupting your own sleep or other players.`;
   }
 };
+
+

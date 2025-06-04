@@ -3,12 +3,12 @@ import {Bot} from 'mineflayer';
 import mineflayer_pathfinder from 'mineflayer-pathfinder';
 import {Recipe} from 'prismarine-recipe';
 
-import {ISkillServiceParams} from '../../types/skillType';
+import {ISkillServiceParams} from '../../types/skillType.js';
 import {isSignalAborted} from '..';
-import {asyncwrap} from './asyncwrap';
-import {findClosestItemName} from './findClosestItemName';
-import {getInventory} from './inventoryHelpers';
-import {updateCraftingInterface} from './updateCraftingInterface';
+import {asyncwrap} from './asyncwrap.js';
+import {findClosestItemName} from './findClosestItemName.js';
+import {getInventory} from './inventoryHelpers.js';
+import {updateCraftingInterface} from './updateCraftingInterface.js';
 
 const {
   goals: {GoalNear},
@@ -611,3 +611,5 @@ const getMostOfInInventory = (bot: Bot, itemType: string) => {
 
   return {itemName: item, amount: most};
 };
+
+

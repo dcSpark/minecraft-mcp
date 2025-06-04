@@ -1,8 +1,8 @@
 import { Bot } from 'mineflayer';
 
-import { ISkillServiceParams, ISkillParams } from '../../types/skillType';
-import { validateSkillParams } from '../index';
-import { attack } from '../library/attack';
+import { ISkillServiceParams, ISkillParams } from '../../types/skillType.js';
+import { validateSkillParams } from '../index.js';
+import { attack } from '../library/attack.js';
 
 /**
  * Attack, kill, defend against, or initiate combat with someone.
@@ -49,3 +49,5 @@ export const attackSomeone = async (
     resetTimeout: serviceParams.resetTimeout,
   });
 };
+
+

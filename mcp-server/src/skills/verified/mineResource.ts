@@ -1,7 +1,7 @@
 import {Bot} from 'mineflayer';
-import {ISkillServiceParams, ISkillParams} from '../../types/skillType';
-import {isSignalAborted, validateSkillParams} from '../index';
-import {mineBlock} from '../library/mineBlock';
+import {ISkillServiceParams, ISkillParams} from '../../types/skillType.js';
+import {isSignalAborted, validateSkillParams} from '../index.js';
+import {mineBlock} from '../library/mineBlock.js';
 
 /**
  * Mine resources in Minecraft such as wood or stone.
@@ -65,3 +65,5 @@ export const mineResource = async (
     );
   }
 };
+
+

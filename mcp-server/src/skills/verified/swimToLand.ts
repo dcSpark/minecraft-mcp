@@ -1,11 +1,11 @@
 import {Bot} from 'mineflayer';
 import {goals} from 'mineflayer-pathfinder';
 
-import {ISkillServiceParams, ISkillParams} from '../../types/skillType';
-import {isSignalAborted, validateSkillParams} from '../index';
-import {asyncwrap} from '../library/asyncwrap';
-import {cancelableMove} from '../library/navigateToLocation';
-import {findLand, findSurface} from '../library/swimHelper';
+import {ISkillServiceParams, ISkillParams} from '../../types/skillType.js';
+import {isSignalAborted, validateSkillParams} from '../index.js';
+import {asyncwrap} from '../library/asyncwrap.js';
+import {cancelableMove} from '../library/navigateToLocation.js';
+import {findLand, findSurface} from '../library/swimHelper.js';
 
 const {GoalNear} = goals;
 
@@ -98,3 +98,5 @@ export const swimToLand = async (
     'You have safely reached the land!',
   );
 };
+
+
