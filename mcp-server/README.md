@@ -2,6 +2,8 @@
 
 An MCP (Model Context Protocol) server that exposes Minecraft bot skills as tools that AI agents can call. Control Minecraft bots through standardized AI interfaces!
 
+> **Note on npm Package**: While this package is published to npm as `@fundamentallabs/minecraft-mcp`, it currently requires running from the source repository due to its dependency on compiled skill files. Running via `npx @fundamentallabs/minecraft-mcp` will result in a "skill implementation not found" error. Please follow the installation instructions below to run from source.
+
 ## Features
 
 - 🤖 **Full Bot Control** - Spawn and control Minecraft bots through AI agents

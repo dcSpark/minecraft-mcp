@@ -23,13 +23,16 @@
     "author": "Fundamental Labs, Inc.",
     "type": "module",
     "main": "./dist/mcp-server.js",
+    "bin": {
+        "minecraft-mcp": "./dist/mcp-server.js"
+    },
     "files": [
         "dist",
         "README.md",
         "LICENSE"
     ],
     "scripts": {
-        "build": "tsc",
+        "build": "tsc && chmod +x dist/mcp-server.js",
         "dev": "tsc --watch",
         "start": "node dist/mcp-server.js",
         "test": "echo \"No tests yet\""
