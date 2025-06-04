@@ -5,7 +5,7 @@ An MCP (Model Context Protocol) server that exposes Minecraft bot skills as tool
 ## Features
 
 - **Full Minecraft Control**: Connect AI agents to Minecraft servers and control bots
-- **26 Verified Skills**: Pre-built, tested skills for common Minecraft tasks
+- **27 Verified Skills**: Pre-built, tested skills for common Minecraft tasks
 - **Flexible Connection**: Connect to any Minecraft server with optional per-bot configuration
 - **Multi-Bot Support**: Manage multiple bots simultaneously
 - **MCP Standard**: Compatible with any MCP client (Claude Desktop, etc.)
@@ -146,6 +146,10 @@ npx @modelcontextprotocol/inspector node dist/mcp-server.js -- -p 25565
 
 - **lookAround** - Look around and observe the environment
 
+### Building
+
+- **buildSomething** - Build structures using Minecraft commands (requires cheats/operator permissions). Supports both static command arrays and dynamic JavaScript code.
+
 ## API Example
 
 When integrated with an MCP client, you can control the bot like this:
@@ -162,6 +166,30 @@ await client.callTool('craftItems', { item: 'oak_planks', count: 40 });
 
 // Navigate to coordinates
 await client.callTool('goToKnownLocation', { x: 100, y: 64, z: 200 });
+
+// Build a structure using commands (requires cheats) - Script mode
+await client.callTool('buildSomething', {
+  buildScript: [
+    { command: "fill", x1: 0, y1: 64, z1: 0, x2: 10, y2: 64, z2: 10, block: "stone" },
+    { command: "fill", x1: 1, y1: 65, z1: 1, x2: 9, y2: 68, z2: 9, block: "oak_planks" },
+    { command: "setblock", x: 5, y: 65, z: 1, block: "oak_door" }
+  ]
+});
+
+// Build dynamically with JavaScript (requires cheats) - Code mode
+await client.callTool('buildSomething', {
+  code: `
+    // Build a pyramid centered on the bot
+    const size = 10;
+    for (let y = 0; y < size; y++) {
+      const level = size - y;
+      fill(pos.x - level, pos.y + y, pos.z - level,
+           pos.x + level, pos.y + y, pos.z + level, 'sandstone');
+      await wait(5); // Small delay between levels
+    }
+    log('Pyramid complete!');
+  `
+});
 ```
 
 ## Architecture

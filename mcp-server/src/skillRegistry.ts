@@ -231,6 +231,20 @@ const SKILL_METADATA: Record<string, { description: string; params: Record<strin
         description: "Look around and observe the environment, providing a detailed text-based view of surroundings",
         params: {},
         required: []
+    },
+    buildSomething: {
+        description: "Build structures using Minecraft commands (requires cheats/operator permissions). Supports two modes: 1) buildScript - array of command objects like [{\"command\": \"fill\", \"x1\": 0, \"y1\": 64, \"z1\": 0, \"x2\": 10, \"y2\": 70, \"z2\": 10, \"block\": \"stone\"}], 2) code - JavaScript string for dynamic building like \"for(let i = 0; i < 10; i++) { setBlock(pos.x + i, pos.y, pos.z, 'stone'); }\"",
+        params: {
+            buildScript: {
+                type: "array",
+                description: "Array of build commands. Supported commands: setblock (place single block), fill (fill region), clone (copy region), summon (spawn entities), give (give items), raw (execute raw command). Each command is an object with command type and parameters."
+            },
+            code: {
+                type: "string",
+                description: "JavaScript code string for dynamic building. Available functions: setBlock(x,y,z,block), fill(x1,y1,z1,x2,y2,z2,block,mode?), clone(x1,y1,z1,x2,y2,z2,dx,dy,dz,mode?), summon(entity,x?,y?,z?), give(item,count?), execute(command), wait(ticks), log(message). Variables: bot, pos (bot position), Math, shouldStop()."
+            }
+        },
+        required: [] // Neither is required, but one must be provided (checked in skill)
     }
 };
 
