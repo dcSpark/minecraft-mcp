@@ -2,42 +2,26 @@
 
 An MCP (Model Context Protocol) server that exposes Minecraft bot skills as tools that AI agents can call. Control Minecraft bots through standardized AI interfaces!
 
-> **Note on npm Package**: While this package is published to npm as `@fundamentallabs/minecraft-mcp`, it currently requires running from the source repository due to its dependency on compiled skill files. Running via `npx @fundamentallabs/minecraft-mcp` will result in a "skill implementation not found" error. Please follow the installation instructions below to run from source.
-
 ## Features
 
 - 🤖 **Full Bot Control** - Spawn and control Minecraft bots through AI agents
-- 🛠️ **25+ Built-in Skills** - Mining, crafting, combat, navigation, and more
+- 🛠️ **26+ Built-in Skills** - Mining, crafting, combat, navigation, and more
 - 🔌 **MCP Compliant** - Works with any MCP-compatible AI client
-- 🎮 **Easy Integration** - Simple setup from source
+- 🎮 **Easy Integration** - Simple setup with npm
 
-## Installation & Setup
+## Installation
 
-**Note:** Currently, the MCP server needs to be run from the source repository as it depends on compiled skill files.
+### Via npm (Recommended)
 
-### 1. Clone the Repository
+```bash
+npm install -g @fundamentallabs/minecraft-mcp
+```
+
+### From Source
 
 ```bash
 git clone https://github.com/FundamentalLabs/minecraft-mcp.git
-cd minecraft-mcp/minecraft-client
-```
-
-### 2. Install Dependencies
-
-```bash
-npm install
-```
-
-### 3. Build the Project
-
-```bash
-npm run build
-```
-
-### 4. Build and Run the MCP Server
-
-```bash
-cd mcp-server
+cd minecraft-mcp/minecraft-client/mcp-server
 npm install
 npm run build
 ```
@@ -46,7 +30,13 @@ npm run build
 
 ### Running the MCP Server
 
-From the `minecraft-client/mcp-server` directory:
+If installed globally via npm:
+
+```bash
+minecraft-mcp -p 25565 -h localhost
+```
+
+If running from source:
 
 ```bash
 node dist/mcp-server.js -p 25565 -h localhost

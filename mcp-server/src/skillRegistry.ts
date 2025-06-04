@@ -259,17 +259,17 @@ function createSkillExecutor(skillName: string) {
         console.error(`[MCP] Executing skill '${skillName}' with args:`, args);
 
         try {
-            // Path to the compiled skill in the main minecraft-client build
-            // __dirname is at: minecraft-client/mcp-server/dist
-            // We need to go up to minecraft-client/dist/bot/skills/verified
-            const skillModulePath = join(dirname(dirname(__dirname)), 'dist', 'bot', 'skills', 'verified', `${skillName}.js`);
+            // Path to the compiled skill bundled with the MCP server
+            // __dirname is at: mcp-server/dist
+            // Skills are at: mcp-server/dist/skills/verified
+            const skillModulePath = join(__dirname, 'skills', 'verified', `${skillName}.js`);
             console.error(`[MCP] Loading skill from: ${skillModulePath}`);
 
             // Check if the skill file exists
             if (!existsSync(skillModulePath)) {
                 throw new Error(
-                    `Skill implementation not found. The MCP server needs to be run from the minecraft-client project directory. ` +
-                    `Please clone the full project from https://github.com/FundamentalLabs/minecraft-mcp and run 'npm install' and 'npm run build' in the minecraft-client directory.`
+                    `Skill implementation not found at ${skillModulePath}. ` +
+                    `Please ensure the MCP server was built correctly with 'npm run build'.`
                 );
             }
 
