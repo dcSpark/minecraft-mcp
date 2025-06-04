@@ -245,6 +245,42 @@ const SKILL_METADATA: Record<string, { description: string; params: Record<strin
             }
         },
         required: [] // Neither is required, but one must be provided (checked in skill)
+    },
+    readChat: {
+        description: "Read recent chat messages from the server. Returns player messages, system messages, whispers, action bar messages, and titles.",
+        params: {
+            count: {
+                type: "number",
+                description: "Number of recent messages to return (default: 20, max: 100)"
+            },
+            timeLimit: {
+                type: "number",
+                description: "Only return messages from the last N seconds (optional)"
+            },
+            filterType: {
+                type: "string",
+                description: "Filter by message type: 'all', 'chat', 'whisper', 'system', 'actionbar', 'title' (default: 'all')"
+            },
+            filterUsername: {
+                type: "string",
+                description: "Filter messages by specific username (optional)"
+            }
+        },
+        required: []
+    },
+    sendChat: {
+        description: "Send chat messages or commands to the server. Can send regular messages, commands (starting with /), or whispers.",
+        params: {
+            message: {
+                type: "string",
+                description: "The message or command to send (max 256 characters)"
+            },
+            delay: {
+                type: "number",
+                description: "Optional delay in milliseconds before sending (default: 0, max: 5000)"
+            }
+        },
+        required: ["message"]
     }
 };
 

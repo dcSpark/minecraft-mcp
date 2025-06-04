@@ -5,7 +5,7 @@ An MCP (Model Context Protocol) server that exposes Minecraft bot skills as tool
 ## Features
 
 - **Full Minecraft Control**: Connect AI agents to Minecraft servers and control bots
-- **27 Verified Skills**: Pre-built, tested skills for common Minecraft tasks
+- **29 Verified Skills**: Pre-built, tested skills for common Minecraft tasks
 - **Flexible Connection**: Connect to any Minecraft server with optional per-bot configuration
 - **Multi-Bot Support**: Manage multiple bots simultaneously
 - **MCP Standard**: Compatible with any MCP client (Claude Desktop, etc.)
@@ -146,6 +146,11 @@ npx @modelcontextprotocol/inspector node dist/mcp-server.js -- -p 25565
 
 - **lookAround** - Look around and observe the environment
 
+### Communication
+
+- **readChat** - Read recent chat messages from the server
+- **sendChat** - Send chat messages or commands to the server
+
 ### Building
 
 - **buildSomething** - Build structures using Minecraft commands (requires cheats/operator permissions). Supports both static command arrays and dynamic JavaScript code.
@@ -189,6 +194,29 @@ await client.callTool('buildSomething', {
     }
     log('Pyramid complete!');
   `
+});
+
+// Read recent chat messages
+await client.callTool('readChat', {
+  count: 30,
+  timeLimit: 300,  // Last 5 minutes
+  filterType: 'chat'  // Only player messages
+});
+
+// Send a chat message
+await client.callTool('sendChat', {
+  message: 'Hello everyone! I am a bot.'
+});
+
+// Send a command
+await client.callTool('sendChat', {
+  message: '/time set day'
+});
+
+// Send a whisper
+await client.callTool('sendChat', {
+  message: '/msg Steve I can help you build!',
+  delay: 1000  // Wait 1 second before sending
 });
 ```
 

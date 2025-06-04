@@ -14,6 +14,7 @@ import { Bot } from 'mineflayer';
 import { createBot as mineflayerCreateBot } from 'mineflayer';
 import { loadSkills, SkillRegistry } from './skillRegistry.js';
 import { BotManager } from './botManager.js';
+import { initializeChatHistory } from './skills/verified/readChat.js';
 
 // Parse command line arguments (now optional)
 program
@@ -184,6 +185,9 @@ server.setRequestHandler(CallToolRequestSchema, async (request: CallToolRequest)
                     bot.nearbyPlayerRadius = 10; // NEARBY_PLAYER_RADIUS
                     bot.hearingRadius = 30; // HEARING_RADIUS
                     bot.nearbyEntityRadius = 10; // NEARBY_ENTITY_RADIUS
+
+                    // Initialize chat history tracking
+                    initializeChatHistory(bot);
 
                     resolve();
                 });
