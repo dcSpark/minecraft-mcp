@@ -7,43 +7,52 @@ An MCP (Model Context Protocol) server that exposes Minecraft bot skills as tool
 - 🤖 **Full Bot Control** - Spawn and control Minecraft bots through AI agents
 - 🛠️ **25+ Built-in Skills** - Mining, crafting, combat, navigation, and more
 - 🔌 **MCP Compliant** - Works with any MCP-compatible AI client
-- 🎮 **Easy Integration** - Simple one-liner installation via npx
+- 🎮 **Easy Integration** - Simple setup from source
 
-## Quick Start
+## Installation & Setup
 
-Run the MCP server directly with npx:
+**Note:** Currently, the MCP server needs to be run from the source repository as it depends on compiled skill files.
+
+### 1. Clone the Repository
 
 ```bash
-npx FundamentalLabs/minecraft-mcp -p 25565 -h localhost
+git clone https://github.com/FundamentalLabs/minecraft-mcp.git
+cd minecraft-mcp/minecraft-client
 ```
 
-## Installation
-
-### As a Global Package
+### 2. Install Dependencies
 
 ```bash
-npm install -g FundamentalLabs/minecraft-mcp
+npm install
 ```
 
-Then run:
+### 3. Build the Project
 
 ```bash
-fl-minecraft -p 25565
+npm run build
 ```
 
-### As a Development Dependency
+### 4. Build and Run the MCP Server
 
 ```bash
-npm install --save-dev FundamentalLabs/minecraft-mcp
+cd mcp-server
+npm install
+npm run build
 ```
 
 ## Usage
 
+### Running the MCP Server
+
+From the `minecraft-client/mcp-server` directory:
+
+```bash
+node dist/mcp-server.js -p 25565 -h localhost
+```
+
 ### Command Line Options
 
 ```bash
-fl-minecraft [options]
-
 Options:
   -p, --port <port>  Minecraft server port (default: 25565)
   -h, --host <host>  Minecraft server host (default: localhost)
@@ -58,12 +67,14 @@ Add to your Claude Desktop configuration (`~/Library/Application Support/Claude/
 {
   "mcpServers": {
     "minecraft": {
-      "command": "npx",
-      "args": ["FundamentalLabs/minecraft-mcp", "-p", "25565", "-h", "localhost"]
+      "command": "node",
+      "args": ["/path/to/minecraft-mcp/minecraft-client/mcp-server/dist/mcp-server.js", "-p", "25565", "-h", "localhost"]
     }
   }
 }
 ```
+
+Replace `/path/to/minecraft-mcp` with the actual path where you cloned the repository.
 
 ### Integration with Other MCP Clients
 
@@ -71,7 +82,8 @@ The server uses stdio transport and can be integrated with any MCP client:
 
 ```bash
 # Using the MCP inspector for testing
-npx @modelcontextprotocol/inspector npx FundamentalLabs/minecraft-mcp -- -p 25565
+cd minecraft-client/mcp-server
+npx @modelcontextprotocol/inspector node dist/mcp-server.js -- -p 25565
 ```
 
 ## Available Skills
@@ -132,6 +144,10 @@ npx @modelcontextprotocol/inspector npx FundamentalLabs/minecraft-mcp -- -p 2556
 
 - **dance** - Make the bot dance
 
+### Vision
+
+- **lookAround** - Look around and observe the environment
+
 ## API Example
 
 When integrated with an MCP client, you can control the bot like this:
@@ -150,23 +166,6 @@ await client.callTool('craftItems', { item: 'oak_planks', count: 40 });
 await client.callTool('goToKnownLocation', { x: 100, y: 64, z: 200 });
 ```
 
-## Development
-
-### Building from Source
-
-```bash
-git clone https://github.com/FundamentalLabs/minecraft-mcp.git
-cd minecraft-mcp/minecraft-client/mcp-server
-npm install
-npm run build
-```
-
-### Running in Development Mode
-
-```bash
-npm run dev
-```
-
 ## Architecture
 
 The MCP server:
@@ -183,6 +182,15 @@ The MCP server:
 - An MCP-compatible client (like Claude Desktop)
 
 ## Troubleshooting
+
+### "Skill implementation not found" Error
+
+The MCP server needs to be run from the cloned repository with built skills. Make sure you:
+
+1. Cloned the full repository
+2. Ran `npm install` in the minecraft-client directory
+3. Ran `npm run build` in the minecraft-client directory
+4. Are running the MCP server from the correct directory
 
 ### Bot won't connect
 

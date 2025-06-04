@@ -22,18 +22,16 @@
     "license": "MIT",
     "author": "Fundamental Labs, Inc.",
     "type": "module",
-    "bin": {
-        "fl-minecraft": "./dist/mcp-server.js"
-    },
+    "main": "./dist/mcp-server.js",
     "files": [
         "dist",
         "README.md",
         "LICENSE"
     ],
     "scripts": {
-        "build": "tsc && node -e \"require('fs').chmodSync('dist/mcp-server.js', '755')\"",
+        "build": "tsc",
         "dev": "tsc --watch",
-        "prepare": "npm run build",
+        "start": "node dist/mcp-server.js",
         "test": "echo \"No tests yet\""
     },
     "dependencies": {

@@ -3,6 +3,7 @@ import { BotWithLogger } from './types.js';
 import { readdir } from 'fs/promises';
 import { join, dirname } from 'path';
 import { fileURLToPath } from 'url';
+import { existsSync } from 'fs';
 
 const __dirname = dirname(fileURLToPath(import.meta.url));
 
@@ -264,6 +265,14 @@ function createSkillExecutor(skillName: string) {
             const skillModulePath = join(dirname(dirname(__dirname)), 'dist', 'bot', 'skills', 'verified', `${skillName}.js`);
             console.error(`[MCP] Loading skill from: ${skillModulePath}`);
 
+            // Check if the skill file exists
+            if (!existsSync(skillModulePath)) {
+                throw new Error(
+                    `Skill implementation not found. The MCP server needs to be run from the minecraft-client project directory. ` +
+                    `Please clone the full project from https://github.com/FundamentalLabs/minecraft-mcp and run 'npm install' and 'npm run build' in the minecraft-client directory.`
+                );
+            }
+
             const skillModule = await import(skillModulePath);
             console.error(`[MCP] Skill module loaded successfully`);
 
@@ -293,16 +302,10 @@ function createSkillExecutor(skillName: string) {
                 }
             };
 
-            // Convert args to the format expected by the skill
-            const params: any = {};
-            for (const [key, value] of Object.entries(args)) {
-                params[key] = {
-                    stringValue: typeof value === 'string' ? value : undefined,
-                    numberValue: typeof value === 'number' ? value : undefined,
-                    booleanValue: typeof value === 'boolean' ? value : undefined
-                };
-            }
-            console.error(`[MCP] Converted params:`, params);
+            // Execute the skill with simple parameters (skills now expect plain objects)
+            console.error(`[MCP] Calling skill function with args:`, args);
+            const result = await skillFunction(bot, args, serviceParams);
+            console.error(`[MCP] Skill '${skillName}' returned:`, result);
 
             // Listen for bot events to capture skill feedback
             const observations: string[] = [];
@@ -314,13 +317,10 @@ function createSkillExecutor(skillName: string) {
             // Use type assertion to handle custom event
             (bot as any).on('alteraBotEndObservation', observationHandler);
 
-            // Execute the skill
-            console.error(`[MCP] Calling skill function...`);
-            const result = await skillFunction(bot, params, serviceParams);
-            console.error(`[MCP] Skill '${skillName}' returned:`, result);
-
-            // Remove the event listener
-            (bot as any).removeListener('alteraBotEndObservation', observationHandler);
+            // Remove the event listener after a short delay to capture any final messages
+            setTimeout(() => {
+                (bot as any).removeListener('alteraBotEndObservation', observationHandler);
+            }, 100);
 
             // Return the observations if any, otherwise a success message
             if (observations.length > 0) {
