@@ -4,7 +4,7 @@ import mineflayer_pathfinder from 'mineflayer-pathfinder';
 import {Recipe} from 'prismarine-recipe';
 
 import {ISkillServiceParams} from '../../types/skillType.js';
-import {isSignalAborted} from '..';
+import {isSignalAborted} from '../index.js';
 import {asyncwrap} from './asyncwrap.js';
 import {findClosestItemName} from './findClosestItemName.js';
 import {getInventory} from './inventoryHelpers.js';
@@ -611,5 +611,6 @@ const getMostOfInInventory = (bot: Bot, itemType: string) => {
 
   return {itemName: item, amount: most};
 };
+
 
 

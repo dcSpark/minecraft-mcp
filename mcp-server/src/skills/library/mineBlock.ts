@@ -4,7 +4,7 @@ import {Bot} from 'mineflayer';
 import mineflayer_pathfinder from 'mineflayer-pathfinder';
 
 import {ISkillServiceParams} from '../../types/skillType.js';
-import {isSignalAborted} from '..';
+import {isSignalAborted} from '../index.js';
 import {asyncwrap} from './asyncwrap.js';
 import {blockHasNearbyAir} from './blockHasNearbyAir.js';
 import {exploreNearby} from './exploreNearby.js';
@@ -613,5 +613,6 @@ const canBotMineItem = async (
 
   return false;
 };
+
 
 

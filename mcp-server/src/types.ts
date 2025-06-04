@@ -7,7 +7,7 @@ declare module 'mineflayer' {
         alteraBotEndObservation: (message: string) => void;
         alteraBotTextObservation: (message: string) => void;
         alteraBotStartObservation: (message: string) => void;
-        alteraBotDelayedEndObservation: (message: string) => void;
+        alteraBotDelayedEndObservation: (message: string, delaySeconds?: number) => void;
     }
 
     interface Bot {
@@ -32,12 +32,35 @@ declare module 'mineflayer' {
         currentInterface?: any;
         setInterface?: (interfaceToSet: any, position?: any, chest?: any) => void;
         updateInterface?: (interfaceToSet: any) => void;
+
+        // Additional bot properties
+        cheatsAllowed?: boolean;
+        lastDanceTime?: number;
     }
 
     interface Entity {
         // Custom properties on entities
         isSleeping?: boolean;
     }
+
+    interface Recipe {
+        missingItems?: Record<string, number>;
+        requiresTable?: boolean;
+    }
+}
+
+// Extend mineflayer-collectblock types
+declare module 'mineflayer-collectblock' {
+    interface CollectOptions {
+        signal?: AbortSignal;
+    }
+}
+
+// Custom extended recipe type to avoid conflicts
+export interface ExtendedRecipe {
+    missingItems?: Record<string, number>;
+    requiresTable?: boolean;
+    [key: string]: any; // Allow other recipe properties
 }
 
 // Logger interface

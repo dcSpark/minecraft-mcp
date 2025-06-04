@@ -2,7 +2,7 @@ import {Bot} from 'mineflayer';
 import {Entity} from 'prismarine-entity';
 
 import {ISkillServiceParams} from '../../types/skillType.js';
-import {isSignalAborted} from '..';
+import {isSignalAborted} from '../index.js';
 import {asyncwrap} from './asyncwrap.js';
 import {findClosestPlayerByName} from './findClosestPlayerByName.js';
 import {navigateToLocation} from './navigateToLocation.js';
@@ -289,5 +289,6 @@ const findTarget = (bot: Bot, options: IFindTargetOptions): Entity | null => {
 
   return target;
 };
+
 
 

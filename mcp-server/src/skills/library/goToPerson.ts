@@ -2,7 +2,7 @@ import {Bot} from 'mineflayer';
 import {Entity} from 'prismarine-entity';
 import {Vec3} from 'vec3';
 
-import {isSignalAborted} from '..';
+import {isSignalAborted} from '../index.js';
 import {findClosestPlayerByName} from './findClosestPlayerByName.js';
 
 const {GoalFollow} = require('mineflayer-pathfinder').goals;
@@ -210,5 +210,6 @@ const isBotFollowing = (bot: Bot, params: IIsBotFollowingParams): boolean => {
 
   return true;
 };
+
 
 
