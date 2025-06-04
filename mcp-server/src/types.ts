@@ -42,11 +42,6 @@ declare module 'mineflayer' {
         // Custom properties on entities
         isSleeping?: boolean;
     }
-
-    interface Recipe {
-        missingItems?: Record<string, number>;
-        requiresTable?: boolean;
-    }
 }
 
 // Extend mineflayer-collectblock types

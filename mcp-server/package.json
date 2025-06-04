@@ -1,6 +1,6 @@
 {
     "name": "@fundamentallabs/minecraft-mcp",
-    "version": "0.2.2",
+    "version": "0.2.3",
     "description": "MCP (Model Context Protocol) server for Minecraft bot skills - Control Minecraft bots through AI agents",
     "keywords": [
         "mcp",
