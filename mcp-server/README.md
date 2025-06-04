@@ -1,0 +1,209 @@
+# Altera Minecraft MCP Server
+
+An MCP (Model Context Protocol) server that exposes Minecraft bot skills as tools that AI agents can call. Control Minecraft bots through standardized AI interfaces!
+
+## Features
+
+- 🤖 **Full Bot Control** - Spawn and control Minecraft bots through AI agents
+- 🛠️ **25+ Built-in Skills** - Mining, crafting, combat, navigation, and more
+- 🔌 **MCP Compliant** - Works with any MCP-compatible AI client
+- 🎮 **Easy Integration** - Simple one-liner installation via npx
+
+## Quick Start
+
+Run the MCP server directly with npx:
+
+```bash
+npx FundamentalLabs/minecraft-mcp -p 25565 -h localhost
+```
+
+## Installation
+
+### As a Global Package
+
+```bash
+npm install -g FundamentalLabs/minecraft-mcp
+```
+
+Then run:
+
+```bash
+fl-minecraft -p 25565
+```
+
+### As a Development Dependency
+
+```bash
+npm install --save-dev FundamentalLabs/minecraft-mcp
+```
+
+## Usage
+
+### Command Line Options
+
+```bash
+fl-minecraft [options]
+
+Options:
+  -p, --port <port>  Minecraft server port (default: 25565)
+  -h, --host <host>  Minecraft server host (default: localhost)
+  --help            Display help
+```
+
+### Integration with Claude Desktop
+
+Add to your Claude Desktop configuration (`~/Library/Application Support/Claude/claude_desktop_config.json` on macOS):
+
+```json
+{
+  "mcpServers": {
+    "minecraft": {
+      "command": "npx",
+      "args": ["FundamentalLabs/minecraft-mcp", "-p", "25565", "-h", "localhost"]
+    }
+  }
+}
+```
+
+### Integration with Other MCP Clients
+
+The server uses stdio transport and can be integrated with any MCP client:
+
+```bash
+# Using the MCP inspector for testing
+npx @modelcontextprotocol/inspector npx FundamentalLabs/minecraft-mcp -- -p 25565
+```
+
+## Available Skills
+
+### Bot Management
+
+- **joinGame** - Spawn a new bot into the Minecraft game
+
+### Movement & Navigation
+
+- **goToSomeone** - Navigate to another player
+- **goToKnownLocation** - Navigate to specific coordinates
+- **runAway** - Run away from threats
+- **swimToLand** - Swim to nearest land when in water
+
+### Combat & Hunting
+
+- **attackSomeone** - Attack players, mobs, or animals
+- **hunt** - Hunt animals or mobs
+
+### Resource Gathering
+
+- **mineResource** - Mine specific blocks or resources
+- **harvestMatureCrops** - Harvest mature crops from farmland
+- **pickupItem** - Pick up items from the ground
+
+### Crafting & Smelting
+
+- **craftItems** - Craft items using a crafting table
+- **cookItem** - Cook items in a furnace
+- **smeltItem** - Smelt items in a furnace
+- **retrieveItemsFromNearbyFurnace** - Get smelted items from furnace
+
+### Inventory Management
+
+- **openInventory** - Open the bot's inventory
+- **equipItem** - Equip armor, tools, or weapons
+- **dropItem** - Drop items from inventory
+- **giveItemToSomeone** - Give items to another player
+
+### Building & Farming
+
+- **placeItemNearYou** - Place blocks near the bot
+- **prepareLandForFarming** - Prepare land for farming
+- **useItemOnBlockOrEntity** - Use items on blocks or entities
+
+### Survival
+
+- **eatFood** - Eat food to restore hunger
+- **rest** - Rest to regain health
+- **sleepInNearbyBed** - Find and sleep in a bed
+
+### Storage
+
+- **openNearbyChest** - Open a nearby chest
+
+### Fun
+
+- **dance** - Make the bot dance
+
+## API Example
+
+When integrated with an MCP client, you can control the bot like this:
+
+```javascript
+// First, spawn a bot
+await client.callTool('joinGame', { username: 'MyBot' });
+
+// Make the bot mine some wood
+await client.callTool('mineResource', { name: 'oak_log', count: 10 });
+
+// Craft wooden planks
+await client.callTool('craftItems', { item: 'oak_planks', count: 40 });
+
+// Navigate to coordinates
+await client.callTool('goToKnownLocation', { x: 100, y: 64, z: 200 });
+```
+
+## Development
+
+### Building from Source
+
+```bash
+git clone https://github.com/FundamentalLabs/minecraft-mcp.git
+cd minecraft-mcp/minecraft-client/mcp-server
+npm install
+npm run build
+```
+
+### Running in Development Mode
+
+```bash
+npm run dev
+```
+
+## Architecture
+
+The MCP server:
+
+- Uses stdio transport for communication with AI clients
+- Dynamically loads skills from the verified skills directory
+- Manages multiple bot instances (currently uses the first bot for all operations)
+- Provides a unified interface for all bot actions
+
+## Requirements
+
+- Node.js >= 18.0.0
+- A Minecraft server (Java Edition) to connect to
+- An MCP-compatible client (like Claude Desktop)
+
+## Troubleshooting
+
+### Bot won't connect
+
+- Ensure your Minecraft server is running and accessible
+- Check that the port and host are correct
+- Verify the server allows the Minecraft version the bot uses
+
+### Skills not working
+
+- Make sure the bot has spawned successfully before using skills
+- Some skills require specific items or conditions
+- Check the bot's console output for error messages
+
+## Contributing
+
+Contributions are welcome! Please feel free to submit a Pull Request.
+
+## License
+
+MIT - see LICENSE file for details
+
+## Support
+
+For issues and feature requests, please use the [GitHub issue tracker](https://github.com/FundamentalLabs/minecraft-mcp/issues).

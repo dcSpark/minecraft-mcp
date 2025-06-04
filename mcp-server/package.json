@@ -1,0 +1,58 @@
+{
+    "name": "@altera-al/minecraft-mcp",
+    "version": "0.1.0",
+    "description": "MCP (Model Context Protocol) server for Minecraft bot skills - Control Minecraft bots through AI agents",
+    "keywords": [
+        "mcp",
+        "minecraft",
+        "mineflayer",
+        "bot",
+        "ai",
+        "model-context-protocol",
+        "fundamentallabs"
+    ],
+    "homepage": "https://github.com/altera-al/minecraft-mcp#readme",
+    "bugs": {
+        "url": "https://github.com/altera-al/minecraft-mcp/issues"
+    },
+    "repository": {
+        "type": "git",
+        "url": "git+https://github.com/altera-al/minecraft-mcp.git"
+    },
+    "license": "MIT",
+    "author": "Your Name",
+    "type": "module",
+    "bin": {
+        "altera-minecraft": "./dist/mcp-server.js"
+    },
+    "files": [
+        "dist",
+        "README.md",
+        "LICENSE"
+    ],
+    "scripts": {
+        "build": "tsc && node -e \"require('fs').chmodSync('dist/mcp-server.js', '755')\"",
+        "dev": "tsc --watch",
+        "prepare": "npm run build",
+        "test": "echo \"No tests yet\""
+    },
+    "dependencies": {
+        "@modelcontextprotocol/sdk": "^0.6.0",
+        "mineflayer": "^4.14.0",
+        "mineflayer-pathfinder": "^2.4.0",
+        "mineflayer-pvp": "^1.3.0",
+        "mineflayer-tool": "^1.2.0",
+        "mineflayer-collectblock": "^1.4.0",
+        "commander": "^11.1.0"
+    },
+    "devDependencies": {
+        "@types/node": "^20.11.24",
+        "typescript": "^5.3.3"
+    },
+    "engines": {
+        "node": ">=18.0.0"
+    },
+    "publishConfig": {
+        "access": "public"
+    }
+}
