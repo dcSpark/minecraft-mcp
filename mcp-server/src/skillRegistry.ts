@@ -237,7 +237,36 @@ const SKILL_METADATA: Record<string, { description: string; params: Record<strin
         params: {
             buildScript: {
                 type: "array",
-                description: "Array of build commands. Supported commands: setblock (place single block), fill (fill region), clone (copy region), summon (spawn entities), give (give items), raw (execute raw command). Each command is an object with command type and parameters."
+                description: "Array of build commands. Supported commands: setblock (place single block), fill (fill region), clone (copy region), summon (spawn entities), give (give items), raw (execute raw command). Each command is an object with command type and parameters.",
+                items: {
+                    type: "object",
+                    properties: {
+                        command: {
+                            type: "string",
+                            description: "The command type: setblock, fill, clone, summon, give, or raw"
+                        },
+                        // Common properties for various commands
+                        x: { type: "number", description: "X coordinate (for setblock)" },
+                        y: { type: "number", description: "Y coordinate (for setblock)" },
+                        z: { type: "number", description: "Z coordinate (for setblock)" },
+                        x1: { type: "number", description: "Start X coordinate (for fill/clone)" },
+                        y1: { type: "number", description: "Start Y coordinate (for fill/clone)" },
+                        z1: { type: "number", description: "Start Z coordinate (for fill/clone)" },
+                        x2: { type: "number", description: "End X coordinate (for fill/clone)" },
+                        y2: { type: "number", description: "End Y coordinate (for fill/clone)" },
+                        z2: { type: "number", description: "End Z coordinate (for fill/clone)" },
+                        dx: { type: "number", description: "Destination X coordinate (for clone)" },
+                        dy: { type: "number", description: "Destination Y coordinate (for clone)" },
+                        dz: { type: "number", description: "Destination Z coordinate (for clone)" },
+                        block: { type: "string", description: "Block type (for setblock/fill)" },
+                        mode: { type: "string", description: "Mode (for fill/clone)" },
+                        entity: { type: "string", description: "Entity type (for summon)" },
+                        item: { type: "string", description: "Item type (for give)" },
+                        count: { type: "number", description: "Item count (for give)" },
+                        raw: { type: "string", description: "Raw command string (for raw command)" }
+                    },
+                    required: ["command"]
+                }
             },
             code: {
                 type: "string",
@@ -245,6 +274,40 @@ const SKILL_METADATA: Record<string, { description: string; params: Record<strin
             }
         },
         required: [] // Neither is required, but one must be provided (checked in skill)
+    },
+    buildPixelArt: {
+        description: "Build pixel art from an image in Minecraft (requires cheats/operator permissions). Converts an image to pixel art using colored blocks. Maximum size is 256x256 blocks.",
+        params: {
+            imagePath: {
+                type: "string",
+                description: "Path or URL to the image file to convert to pixel art"
+            },
+            width: {
+                type: "number",
+                description: "Width of the pixel art in blocks (max 256)"
+            },
+            height: {
+                type: "number",
+                description: "Height of the pixel art in blocks (max 256)"
+            },
+            x: {
+                type: "number",
+                description: "X coordinate for the bottom middle of the pixel art"
+            },
+            y: {
+                type: "number",
+                description: "Y coordinate for the bottom of the pixel art"
+            },
+            z: {
+                type: "number",
+                description: "Z coordinate for the bottom middle of the pixel art"
+            },
+            facing: {
+                type: "string",
+                description: "Direction the pixel art faces: 'north', 'south', 'east', or 'west' (default: 'north')"
+            }
+        },
+        required: ["imagePath", "width", "height", "x", "y", "z"]
     },
     readChat: {
         description: "Read recent chat messages from the server. Returns player messages, system messages, whispers, action bar messages, and titles.",

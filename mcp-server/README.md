@@ -5,7 +5,7 @@ An MCP (Model Context Protocol) server that exposes Minecraft bot skills as tool
 ## Features
 
 - **Full Minecraft Control**: Connect AI agents to Minecraft servers and control bots
-- **29 Verified Skills**: Pre-built, tested skills for common Minecraft tasks
+- **30 Verified Skills**: Pre-built, tested skills for common Minecraft tasks
 - **Flexible Connection**: Connect to any Minecraft server with optional per-bot configuration
 - **Multi-Bot Support**: Manage multiple bots simultaneously
 - **MCP Standard**: Compatible with any MCP client (Claude Desktop, etc.)
@@ -154,6 +154,7 @@ npx @modelcontextprotocol/inspector node dist/mcp-server.js -- -p 25565
 ### Building
 
 - **buildSomething** - Build structures using Minecraft commands (requires cheats/operator permissions). Supports both static command arrays and dynamic JavaScript code.
+- **buildPixelArt** - Build pixel art from an image in Minecraft (requires cheats/operator permissions). Converts an image to pixel art using colored blocks. Maximum size is 256x256 blocks.
 
 ## API Example
 
@@ -194,6 +195,17 @@ await client.callTool('buildSomething', {
     }
     log('Pyramid complete!');
   `
+});
+
+// Build pixel art from an image (requires cheats)
+await client.callTool('buildPixelArt', {
+  imagePath: 'https://example.com/logo.png',
+  width: 64,
+  height: 64,
+  x: 0,
+  y: 80,
+  z: 100,
+  facing: 'north'
 });
 
 // Read recent chat messages
@@ -269,3 +281,9 @@ MIT - see LICENSE file for details
 ## Support
 
 For issues and feature requests, please use the [GitHub issue tracker](https://github.com/FundamentalLabs/minecraft-mcp/issues).
+
+### Testing
+
+To test with the Anthropic MPC inspector
+
+'npx @modelcontextprotocol/inspector node ./dist/mcp-server.js'

@@ -1,6 +1,6 @@
 {
     "name": "@fundamentallabs/minecraft-mcp",
-    "version": "0.2.13",
+    "version": "0.2.17",
     "description": "MCP (Model Context Protocol) server for Minecraft bot skills - Control Minecraft bots through AI agents",
     "keywords": [
         "mcp",
@@ -46,7 +46,10 @@
         "mineflayer-pvp": "^1.3.0",
         "mineflayer-tool": "^1.2.0",
         "mineflayer-collectblock": "^1.4.0",
-        "commander": "^11.1.0"
+        "commander": "^11.1.0",
+        "fastest-levenshtein": "^1.0.16",
+        "jimp": "^0.22.12",
+        "axios": "^1.6.0"
     },
     "devDependencies": {
         "@types/node": "^20.11.24",

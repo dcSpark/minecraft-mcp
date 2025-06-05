@@ -1,18 +1,18 @@
-import {closest, distance} from 'fastest-levenshtein';
+import { closest, distance } from 'fastest-levenshtein';
 import minecraftData from 'minecraft-data';
-import {Bot} from 'mineflayer';
+import { Bot } from 'mineflayer';
 import mineflayer_pathfinder from 'mineflayer-pathfinder';
 
-import {ISkillServiceParams} from '../../../types/skillType';
-import {isSignalAborted} from '..';
-import {asyncwrap} from './asyncwrap';
-import {blockHasNearbyAir} from './blockHasNearbyAir';
-import {exploreNearby} from './exploreNearby';
-import {cancelableMove} from './navigateToLocation';
+import { ISkillServiceParams } from '../../../types/skillType';
+import { isSignalAborted } from '..';
+import { asyncwrap } from './asyncwrap';
+import { blockHasNearbyAir } from './blockHasNearbyAir';
+import { exploreNearby } from './exploreNearby';
+import { cancelableMove } from './navigateToLocation';
 
 const {
   Movements,
-  goals: {GoalNear, GoalBlock},
+  goals: { GoalNear, GoalBlock },
 } = mineflayer_pathfinder;
 
 interface iMineBlockOptions {
@@ -117,7 +117,7 @@ export const mineBlock = async (
         `Mistake: you couldn't mine ${originalName} because there's no block named ${originalName} in minecraft.`,
       );
     }
-    const canMine = await canBotMine(bot, {blockByName});
+    const canMine = await canBotMine(bot, { blockByName });
     if (!canMine) {
       // canMine will handle the error message emission
       // console.log(` cannot mine ${name}`);
@@ -137,7 +137,7 @@ export const mineBlock = async (
           const delayFunc = async () => {
             return new Promise((resolve) => setTimeout(resolve, 5000));
           };
-          await asyncwrap({func: delayFunc, getStatsData, setStatsData});
+          await asyncwrap({ func: delayFunc, getStatsData, setStatsData });
           bot.chat(`/give @s ${dropName} ${count}`);
           return bot.emit(
             'alteraBotEndObservation',
@@ -158,7 +158,7 @@ export const mineBlock = async (
         `Mistake: you couldn't mine ${originalName} because there's no item named ${originalName} in minecraft.`,
       );
     }
-    const canMine = await canBotMineItem(bot, {itemByName});
+    const canMine = await canBotMineItem(bot, { itemByName });
     if (!canMine) {
       // error / end message is handled by canBotMineItem
       return bot.emit(
@@ -211,8 +211,8 @@ export const mineBlock = async (
       return block === null
         ? false
         : matchingblocks.indexOf(block.type) >= 0 &&
-            (!block.position ||
-              blockHasNearbyAir(bot, {position: block.position}));
+        (!block.position ||
+          blockHasNearbyAir(bot, { position: block.position }));
     },
     maxDistance: bot.nearbyBlockXZRange,
     count: findBlocksCount, // ignore count, find all blocks, filter later
@@ -323,12 +323,12 @@ export const mineBlock = async (
             const digFunc = async function () {
               return bot.dig(block);
             };
-            await asyncwrap({func: digFunc, getStatsData, setStatsData});
+            await asyncwrap({ func: digFunc, getStatsData, setStatsData });
             // Wait for .5 second
             const waitFunc = async function () {
               return bot.waitForTicks(10);
             };
-            await asyncwrap({func: waitFunc, setStatsData, getStatsData});
+            await asyncwrap({ func: waitFunc, setStatsData, getStatsData });
             const gotoFunc = async function () {
               return bot.pathfinder.goto(
                 new GoalBlock(
@@ -338,7 +338,7 @@ export const mineBlock = async (
                 ),
               );
             };
-            await asyncwrap({func: gotoFunc, setStatsData, getStatsData});
+            await asyncwrap({ func: gotoFunc, setStatsData, getStatsData });
           } catch (error) {
             console.log(
               `\x1b[31m[ Failed to mine block at ${block.position}: ${error}]\x1b[0m`,
@@ -353,7 +353,7 @@ export const mineBlock = async (
         for (const block of batchBlocks) {
           try {
             bot.pathfinder.setGoal(null);
-          } catch (er) {} // force a stop to the pathfinder
+          } catch (er) { } // force a stop to the pathfinder
           // path to the block
           const reachedBlock = await cancelableMove(bot, {
             goal: new GoalNear(
@@ -401,7 +401,12 @@ export const mineBlock = async (
             });
 
             // needed to determine promise is finishing.
-            collectBlockPromise.then(() => (finished = true));
+            collectBlockPromise
+              .then(() => (finished = true))
+              .catch(() => {
+                // Silently catch errors here to prevent unhandled rejections
+                // The actual error handling is done in the try-catch block below
+              });
 
             await Promise.race([collectBlockPromise, abortPromise]);
           } catch (err) {
@@ -472,7 +477,7 @@ interface iTryHarvestOptions {
  * @return {boolean} - Returns true if the bot can harvest the block with the tool, false otherwise.
  */
 const tryHarvest = (bot: Bot, options: iTryHarvestOptions): boolean => {
-  const {toolName, block} = options;
+  const { toolName, block } = options;
   const mcData = minecraftData(bot.version);
 
   if (!block.harvestTools) {
@@ -502,7 +507,7 @@ const canBotMine = async (
   bot: Bot,
   options: iCanBotMineOptions,
 ): Promise<boolean> => {
-  const {blockByName, verbose = true} = options;
+  const { blockByName, verbose = true } = options;
   const mcData = minecraftData(bot.version);
   // Enumeration of tools ordered by mining level
   const allMiningTools = [
@@ -520,7 +525,7 @@ const canBotMine = async (
   const canHarvest = botCurrentTools.some(
     (tool) =>
       mcData.itemsByName[tool] &&
-      tryHarvest(bot, {toolName: tool, block: blockByName}),
+      tryHarvest(bot, { toolName: tool, block: blockByName }),
   );
 
   if (canHarvest || !blockByName.harvestTools) {
@@ -529,7 +534,7 @@ const canBotMine = async (
   } else {
     // If the bot cannot harvest the block with its current tools, determine the lowest level tool required
     const lowestLevelTool = allMiningTools.find((tool) =>
-      tryHarvest(bot, {toolName: tool, block: blockByName}),
+      tryHarvest(bot, { toolName: tool, block: blockByName }),
     );
     if (lowestLevelTool) {
       const toolName = mcData.itemsByName[lowestLevelTool].displayName;
@@ -596,7 +601,7 @@ const canBotMineItem = async (
   bot: Bot,
   options: iCanBotMineItemOptions,
 ): Promise<boolean> => {
-  const {itemByName} = options;
+  const { itemByName } = options;
   const mcData = minecraftData(bot.version);
   // get all blocks that drop the item
   const blocks = mcData.blocksArray.filter((block) => {
@@ -605,7 +610,7 @@ const canBotMineItem = async (
   });
 
   for (const block of blocks) {
-    const canMine = await canBotMine(bot, {blockByName: block, verbose: false});
+    const canMine = await canBotMine(bot, { blockByName: block, verbose: false });
     if (canMine) {
       return true;
     }
