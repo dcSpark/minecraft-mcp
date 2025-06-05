@@ -11,8 +11,8 @@ import {updateCraftingInterface} from '../library/updateCraftingInterface.js';
  *
  * @param {Bot} bot - The Mineflayer bot instance. Assume the bot is already spawned in the world.
  * @param {ISkillParams} params - The parameters for the skill function.
- * @param {string} params.item.stringValue - The name of the item to craft.
- * @param {number} params.count.numberValue - The number of items to craft. Defaults to 1.
+ * @param {string} params.item - The name of the item to craft.
+ * @param {number} params.count - The number of items to craft. Defaults to 1.
  * @param {string} params.signal - The signal to emit when the skill is done.
  * @param {Function} serviceParams.getStatsData - A function to get the stats data.
  * @param {Function} serviceParams.setStatsData - A function to set the stats data.

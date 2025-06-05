@@ -8,7 +8,7 @@ import {isSignalAborted, validateSkillParams} from '../index.js';
  *
  * @param {Bot} bot - The Mineflayer bot instance.
  * @param {ISkillParams} params - The parameters for the skill function.
- * @param {number} params.restTime.numberValue - The duration of time to rest for, in seconds. Maximum time is 12 seconds.
+ * @param {number} params.restTime - The duration of time to rest for, in seconds. Maximum time is 12 seconds.
  * @param {ISkillServiceParams} serviceParams - Additional parameters for the skill function.
  *
  * @return {Promise<boolean>} - Returns true if the bot successfully rested, false otherwise.

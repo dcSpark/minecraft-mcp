@@ -1,13 +1,13 @@
-import {Bot} from 'mineflayer';
-import {goals} from 'mineflayer-pathfinder';
+import mineflayer_pathfinder from 'mineflayer-pathfinder';
+const { goals } = mineflayer_pathfinder;
+import { Bot } from 'mineflayer';
+import { ISkillServiceParams, ISkillParams } from '../../types/skillType.js';
+import { isSignalAborted, validateSkillParams } from '../index.js';
+import { asyncwrap } from '../library/asyncwrap.js';
+import { cancelableMove } from '../library/navigateToLocation.js';
+import { findLand, findSurface } from '../library/swimHelper.js';
 
-import {ISkillServiceParams, ISkillParams} from '../../types/skillType.js';
-import {isSignalAborted, validateSkillParams} from '../index.js';
-import {asyncwrap} from '../library/asyncwrap.js';
-import {cancelableMove} from '../library/navigateToLocation.js';
-import {findLand, findSurface} from '../library/swimHelper.js';
-
-const {GoalNear} = goals;
+const { GoalNear } = goals;
 
 /**
  * This skill allows the bot to swim to the nearest land from its current position in water.
@@ -37,7 +37,7 @@ export const swimToLand = async (
     );
     return false;
   }
-  const {getStatsData, setStatsData, signal} = serviceParams;
+  const { getStatsData, setStatsData, signal } = serviceParams;
 
   // Define a set of water-related blocks where the bot might start swimming
   const waterBlocks = new Set(['water', 'seagrass', 'kelp', 'kelp_plant']);
@@ -60,7 +60,7 @@ export const swimToLand = async (
   }
 
   console.log('Searching for surface...');
-  const surfacePosition = await findSurface(bot, {getStatsData, setStatsData});
+  const surfacePosition = await findSurface(bot, { getStatsData, setStatsData });
   if (!surfacePosition) {
     console.log('Unable to find surface. The bot might not be in water.');
     return;

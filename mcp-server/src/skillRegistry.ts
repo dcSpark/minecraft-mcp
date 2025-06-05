@@ -332,6 +332,32 @@ function createSkillExecutor(skillName: string) {
                 throw new Error(`Skill function '${skillName}' not found in module`);
             }
 
+            // Set up event listeners BEFORE executing the skill
+            const observations: string[] = [];
+            const textObservations: string[] = [];
+            let startObservationSet = false;
+
+            const startObservationHandler = (message: string) => {
+                console.error(`[MCP] Bot start observation: ${message}`);
+                startObservationSet = true;
+                observations.push(message);
+            };
+
+            const textObservationHandler = (message: string) => {
+                console.error(`[MCP] Bot text observation: ${message}`);
+                textObservations.push(message);
+            };
+
+            const endObservationHandler = (message: string) => {
+                console.error(`[MCP] Bot end observation: ${message}`);
+                observations.push(message);
+            };
+
+            // Add event listeners
+            (bot as any).on('alteraBotStartObservation', startObservationHandler);
+            (bot as any).on('alteraBotTextObservation', textObservationHandler);
+            (bot as any).on('alteraBotEndObservation', endObservationHandler);
+
             // Create service parameters with necessary functions
             const abortController = new AbortController();
             const serviceParams = {
@@ -354,29 +380,50 @@ function createSkillExecutor(skillName: string) {
 
             // Execute the skill with simple parameters (skills now expect plain objects)
             console.error(`[MCP] Calling skill function with args:`, args);
-            const result = await skillFunction(bot, args, serviceParams);
-            console.error(`[MCP] Skill '${skillName}' returned:`, result);
+            let result;
 
-            // Listen for bot events to capture skill feedback
-            const observations: string[] = [];
-            const observationHandler = (message: string) => {
-                console.error(`[MCP] Bot observation: ${message}`);
-                observations.push(message);
-            };
-
-            // Use type assertion to handle custom event
-            (bot as any).on('alteraBotEndObservation', observationHandler);
-
-            // Remove the event listener after a short delay to capture any final messages
-            setTimeout(() => {
-                (bot as any).removeListener('alteraBotEndObservation', observationHandler);
-            }, 100);
-
-            // Return the observations if any, otherwise a success message
-            if (observations.length > 0) {
-                return observations.join('\n');
+            try {
+                result = await skillFunction(bot, args, serviceParams);
+                console.error(`[MCP] Skill '${skillName}' returned:`, result);
+            } finally {
+                // Always remove event listeners
+                (bot as any).removeListener('alteraBotStartObservation', startObservationHandler);
+                (bot as any).removeListener('alteraBotTextObservation', textObservationHandler);
+                (bot as any).removeListener('alteraBotEndObservation', endObservationHandler);
             }
-            return result ? `Skill '${skillName}' executed successfully` : `Skill '${skillName}' failed`;
+
+            // Format the response
+            let response = '';
+
+            // If we have observations, format them nicely
+            if (observations.length > 0 || textObservations.length > 0) {
+                // Add start observation if any
+                if (startObservationSet && observations.length > 0) {
+                    response += observations[0] + '\n';
+                }
+
+                // Add text observations
+                if (textObservations.length > 0) {
+                    response += '\n' + textObservations.join('\n') + '\n';
+                }
+
+                // Add end observation if any
+                if (observations.length > 1) {
+                    response += '\n' + observations[observations.length - 1];
+                } else if (observations.length === 1 && !startObservationSet) {
+                    response += observations[0];
+                }
+
+                return response.trim();
+            }
+
+            // If no observations but we have a result, return it
+            if (result !== undefined && result !== null) {
+                return String(result);
+            }
+
+            // Default response
+            return `Skill '${skillName}' executed successfully`;
         } catch (error) {
             console.error(`[MCP] Error executing skill '${skillName}':`, error);
             throw new Error(`Failed to execute skill '${skillName}': ${error instanceof Error ? error.message : String(error)}`);

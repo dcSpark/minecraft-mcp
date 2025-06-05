@@ -1,14 +1,15 @@
 import minecraftData from 'minecraft-data';
-import {Bot} from 'mineflayer';
-import {goals} from 'mineflayer-pathfinder';
-import {Vec3} from 'vec3';
+import { Bot } from 'mineflayer';
+import mineflayer_pathfinder from 'mineflayer-pathfinder';
+const { goals } = mineflayer_pathfinder;
+import { Vec3 } from 'vec3';
 
-import {ISkillServiceParams} from '../../types/skillType.js';
-import {asyncwrap} from './asyncwrap.js';
-import {findClosestItemName} from './findClosestItemName.js';
-import {placeBlockAt} from './placeBlockAt.js';
+import { ISkillServiceParams } from '../../types/skillType.js';
+import { asyncwrap } from './asyncwrap.js';
+import { findClosestItemName } from './findClosestItemName.js';
+import { placeBlockAt } from './placeBlockAt.js';
 
-const {GoalPlaceBlock} = goals;
+const { GoalPlaceBlock } = goals;
 
 interface IPlaceBlockAtCoordinatesOptions {
   itemName: string;
@@ -47,7 +48,7 @@ export const placeBlockAtCoordinates = async (
   const mcData = minecraftData(bot.version);
   // Search for the closest item name in the mcData items list
   console.log(`Placing block ${itemName} at {${x},${y},${z}}`);
-  const closestItemName = findClosestItemName(bot, {name: itemName});
+  const closestItemName = findClosestItemName(bot, { name: itemName });
   if (!closestItemName) {
     bot.emit(
       'alteraBotEndObservation',
@@ -82,7 +83,7 @@ export const placeBlockAtCoordinates = async (
           ignoreNoPath: true,
         });
       };
-      await asyncwrap({func: collectFunc, getStatsData, setStatsData});
+      await asyncwrap({ func: collectFunc, getStatsData, setStatsData });
     } catch (error) {
       bot.emit(
         'alteraBotEndObservation',
@@ -168,7 +169,7 @@ export const placeBlockAtCoordinates = async (
           console.error(`Error going to the goal: ${err}`);
         });
     };
-    await asyncwrap({func: gotoFunc, getStatsData, setStatsData});
+    await asyncwrap({ func: gotoFunc, getStatsData, setStatsData });
     blockItem = bot.inventory.items().find((item) => item.name === itemName);
     // Check if blockItem is true now
     if (!blockItem && alwaysHaveItem) {
@@ -180,7 +181,7 @@ export const placeBlockAtCoordinates = async (
     const equipFunc = async function () {
       return bot.equip(blockItem, 'hand');
     };
-    await asyncwrap({func: equipFunc, getStatsData, setStatsData});
+    await asyncwrap({ func: equipFunc, getStatsData, setStatsData });
     console.log(`Placing ${itemName} at {${x},${y},${z}}`);
     await placeBlockAt(bot, {
       targetPosition: placementPosition,

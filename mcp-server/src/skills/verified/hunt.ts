@@ -9,10 +9,10 @@ import {attack} from '../library/attack.js';
  *
  * @param {Bot} bot - The Mineflayer bot instance.
  * @param {ISkillParams} params
- * @param {string} params.targetType.stringValue - The type of the target to hunt. Use 'player' for players, 'mob' for any hostile mobs, 'animal' for animals.
- * @param {string} params.targetName.stringValue - OPTIONAL: The specific display name of the entity to attack (optional). For players, use the player's username. For mobs, use the mob type (e.g., 'Zombie'). For animals, use the animal name (e.g., 'Chicken'). Make sure the target name starts with a capital letter.
- * @param {number} params.amount.numberValue - OPTIONAL: The number of entity you should hunt, this defaults to 4. Maximum amount is 5.
- * @param {number} params.duration.numberValue - OPTIONAL: Duration in seconds to attack for.  Defaults to 30 seconds. Maximum duration is 60 seconds.
+ * @param {string} params.targetType - The type of the target to hunt. Use 'player' for players, 'mob' for any hostile mobs, 'animal' for animals.
+ * @param {string} params.targetName - OPTIONAL: The specific display name of the entity to attack (optional). For players, use the player's username. For mobs, use the mob type (e.g., 'Zombie'). For animals, use the animal name (e.g., 'Chicken'). Make sure the target name starts with a capital letter.
+ * @param {number} params.amount - OPTIONAL: The number of entity you should hunt, this defaults to 4. Maximum amount is 5.
+ * @param {number} params.duration - OPTIONAL: Duration in seconds to attack for.  Defaults to 30 seconds. Maximum duration is 60 seconds.
  * @param {ISkillServiceParams} serviceParams - additional parameters for the skill function.
  *
  * @return {Promise<boolean>} - Returns true if the bot successfully went to the person, false otherwise.

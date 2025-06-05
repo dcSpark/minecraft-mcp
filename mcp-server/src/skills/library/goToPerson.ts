@@ -1,11 +1,14 @@
-import {Bot} from 'mineflayer';
-import {Entity} from 'prismarine-entity';
-import {Vec3} from 'vec3';
+import { Bot } from 'mineflayer';
+import { Entity } from 'prismarine-entity';
+import { Vec3 } from 'vec3';
 
-import {isSignalAborted} from '../index.js';
-import {findClosestPlayerByName} from './findClosestPlayerByName.js';
+import { isSignalAborted } from '../index.js';
+import { findClosestPlayerByName } from './findClosestPlayerByName.js';
 
-const {GoalFollow} = require('mineflayer-pathfinder').goals;
+import minecraftData from 'minecraft-data';
+import mineflayer_pathfinder from 'mineflayer-pathfinder';
+
+const { GoalFollow } = mineflayer_pathfinder.goals;
 
 interface IGoToPersonParams {
   name: string;
@@ -19,9 +22,9 @@ interface IGoToPersonParams {
  *
  * @param {object} bot - The Mineflayer bot instance. Assume the bot is already spawned in the world.
  * @param {object} params
- * @param {string} params.name.stringValue - The name of the person to go to or follow.
- * @param {number} params.distance.numberValue - The desired distance to get within the person. Default is 3 blocks.
- * @param {boolean} params.keepFollowing.boolValue - Whether to keep following the person after reaching them. Default is false.
+ * @param {string} params.name - The name of the person to go to or follow.
+ * @param {number} params.distance - The desired distance to get within the person. Default is 3 blocks.
+ * @param {boolean} params.keepFollowing - Whether to keep following the person after reaching them. Default is false.
  * @param {AbortSignal} params.signal - The signal to abort the skill.
  *
  * @return {Promise<boolean>} - Returns true if the bot successfully went to the person, false otherwise.
@@ -30,7 +33,7 @@ export const goToPerson = async (
   bot: Bot,
   params: IGoToPersonParams,
 ): Promise<boolean> => {
-  const {distance: distanceParam, name, keepFollowing, signal} = params;
+  const { distance: distanceParam, name, keepFollowing, signal } = params;
   const distance = Math.max(1, distanceParam); // Ensure distance is at least 1
 
   const TELEPORT_TOLERANCE_THRESHOLD = 30; // in blocks, if the entity is this far away, try to teleport to them
@@ -39,7 +42,7 @@ export const goToPerson = async (
   const PROCESS_UPDATE_FREQUENCY = 50; // how often to check if the bot is still following the entity in milliseconds, ~20 times per second
   const HASNT_MOVED_THRESHOLD = 10000; // in milliseconds - 3 seconds, how long to wait before assuming the entity has stopped moving
 
-  const entity = findClosestPlayerByName(bot, {name});
+  const entity = findClosestPlayerByName(bot, { name });
 
   if (!entity) {
     // bot.chat(`Entity ${name} not found.`);
@@ -96,7 +99,7 @@ export const goToPerson = async (
       hasntMovedCount = 0;
     }
 
-    if (!isBotFollowing(bot, {entity})) {
+    if (!isBotFollowing(bot, { entity })) {
       break;
     }
 
@@ -175,7 +178,7 @@ const findEntityByName = (
   bot: Bot,
   params: IFindEntityByNameParams,
 ): Entity | null => {
-  const {name} = params;
+  const { name } = params;
   return Object.values(bot.entities).find((entity) => entity.username === name);
 };
 
@@ -192,17 +195,16 @@ interface IIsBotFollowingParams {
  * @return {boolean} - Returns true if the bot is still following the entity, false otherwise.
  */
 const isBotFollowing = (bot: Bot, params: IIsBotFollowingParams): boolean => {
-  const {entity} = params;
-  const goal = bot.pathfinder.goal as typeof GoalFollow;
+  const { entity } = params;
+  const goal = bot.pathfinder.goal;
 
   // check to see that the goal is still valid and pointing to the same entity
   if (
     goal === null ||
     goal === undefined ||
-    goal.entity === null ||
-    goal.entity === undefined ||
-    goal.entity.username !== entity.username ||
-    findEntityByName(bot, {name: entity.username}) === null
+    !(goal as any).entity ||
+    (goal as any).entity.username !== entity.username ||
+    findEntityByName(bot, { name: entity.username }) === null
   ) {
     console.log(`Goal is null or entity is not found in following`);
     return false;

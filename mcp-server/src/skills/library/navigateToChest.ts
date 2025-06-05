@@ -1,10 +1,11 @@
-import {Bot} from 'mineflayer';
-import {goals} from 'mineflayer-pathfinder';
-import {Vec3} from 'vec3';
+import mineflayer_pathfinder from 'mineflayer-pathfinder';
+const { goals } = mineflayer_pathfinder;
+import { Bot } from 'mineflayer';
+import { Vec3 } from 'vec3';
 
-import {ISkillServiceParams} from '../../types/skillType.js';
-import {asyncwrap} from './asyncwrap.js';
-const {GoalLookAtBlock} = goals;
+import { ISkillServiceParams } from '../../types/skillType.js';
+import { asyncwrap } from './asyncwrap.js';
+const { GoalLookAtBlock } = goals;
 
 interface INavigateToChestOptions {
   chestPosition: Vec3;
@@ -26,7 +27,7 @@ export const navigateToChest = async (
   bot: Bot,
   options: INavigateToChestOptions,
 ): Promise<void> => {
-  const {chestPosition, getStatsData, setStatsData} = options;
+  const { chestPosition, getStatsData, setStatsData } = options;
   if (bot.pathfinder.isMoving()) bot.pathfinder.stop(); // Clear any prior pathfinder goals
   const goal = new GoalLookAtBlock(chestPosition, bot.world);
   const gotoFunc = async function () {

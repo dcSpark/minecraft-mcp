@@ -11,10 +11,10 @@ import {navigateToLocation} from '../library/navigateToLocation.js';
  *
  * @param {Bot} bot - The Mineflayer bot instance.
  * @param {ISkillParams} params - The parameters for the skill function.
- * @param {number} params.x.numberValue - The x coordinate of the target location.
- * @param {number} params.y.numberValue - The y coordinate of the target location.
- * @param {number} params.z.numberValue - The z coordinate of the target location.
- * @param {string} params.name.stringValue - The name of the person to go to.
+ * @param {number} params.x - The x coordinate of the target location.
+ * @param {number} params.y - The y coordinate of the target location.
+ * @param {number} params.z - The z coordinate of the target location.
+ * @param {string} params.name - The name of the person to go to.
  * @param {ISkillServiceParams} serviceParams - Additional parameters for the skill function.
  *
  * @return {Promise<boolean>} - Returns true if the bot successfully went to the location or person, false otherwise.
@@ -41,9 +41,9 @@ export const goToKnownLocation = async (
   }
 
   const unpackedParams = {
-    x: params.x.numberValue,
-    y: params.y.numberValue,
-    z: params.z.numberValue,
+    x: params.x,
+    y: params.y,
+    z: params.z,
     name: params.name,
     signal: serviceParams.signal,
   };

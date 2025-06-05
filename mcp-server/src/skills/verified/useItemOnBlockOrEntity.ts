@@ -13,9 +13,9 @@ import {navigateToLocation} from '../library/navigateToLocation.js';
  *
  * @param {Object} bot - The Mineflayer bot instance.
  * @param {Object} params
- * @param {string} params.item.stringValue - The name of the item to use, this should be null if you just want to use or attack the entity or block without a particular item
- * @param {string} params.target.stringValue - The target that the item will be used on
- * @param {number} params.count.numberValue - OPTIONAL: The number of times to use the item, defaults to a single time, or 1
+ * @param {string} params.item - The name of the item to use, this should be null if you just want to use or attack the entity or block without a particular item
+ * @param {string} params.target - The target that the item will be used on
+ * @param {number} params.count - OPTIONAL: The number of times to use the item, defaults to a single time, or 1
  * @param {object} serviceParams - additional parameters for the skill function.
  *
  **/

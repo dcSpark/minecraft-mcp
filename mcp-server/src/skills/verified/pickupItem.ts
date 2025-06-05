@@ -21,7 +21,7 @@ const {
  * @param {Bot} bot - The Mineflayer bot instance.
  * @param {ISkillParams} params - The parameters for the skill function.
  * @param {ISkillServiceParams} serviceParams - Additional parameters for the skill function.
- * @param {string} params.itemName.stringValue - The name of the item to go to and collect.
+ * @param {string} params.itemName - The name of the item to go to and collect.
  *
  * @return {Promise<boolean>} - Returns true if the bot successfully collected the item, false otherwise.
  */

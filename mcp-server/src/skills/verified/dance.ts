@@ -1,18 +1,17 @@
-import {Bot} from 'mineflayer';
-
-import {ISkillServiceParams, ISkillParams} from '../../types/skillType.js';
-import {goals, Movements} from 'mineflayer-pathfinder';
-import {Vec3} from 'vec3';
-
-import {validateSkillParams} from '../index.js';
-const {GoalXZ} = goals;
+import { Bot } from 'mineflayer';
+import { ISkillServiceParams, ISkillParams } from '../../types/skillType.js';
+import mineflayer_pathfinder from 'mineflayer-pathfinder';
+const { goals, Movements } = mineflayer_pathfinder;
+import { Vec3 } from 'vec3';
+import { isSignalAborted, validateSkillParams } from '../index.js';
+const { GoalXZ } = goals;
 
 /**
  * Dance around for a specific amount of time
  * @param {Object} bot - The Mineflayer bot instance.
  * @param {object} params
- * @param {number} params.time.numberValue - OPTIONAL: The number of seconds to dance for, defaults to 10 seconds if not specified., maximum of 60 seconds
- * @param {name} params.name.stringValue - OPTIONAL: The name of the person to dance with.
+ * @param {number} params.time - OPTIONAL: The number of seconds to dance for, defaults to 10 seconds if not specified., maximum of 60 seconds
+ * @param {name} params.name - OPTIONAL: The name of the person to dance with.
  * @param {ISkillServiceParams} serviceParams - additional parameters for the skill function.
  *
  * @return {Promise<boolean>} - Returns true if the bot successfully ran away from the target, false otherwise.
@@ -43,7 +42,7 @@ export const dance = async (
     time: params.time ?? 10,
     signal: serviceParams.signal,
   };
-  const {name, signal} = unpackedParams;
+  const { name, signal } = unpackedParams;
   const DANCE_INTERVAL = 180000; // 3 minutes
 
   // Check if the bot is already dancing

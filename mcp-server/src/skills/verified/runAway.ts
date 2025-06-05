@@ -1,15 +1,15 @@
-import {Bot} from 'mineflayer';
+import { Bot } from 'mineflayer';
+import { ISkillServiceParams, ISkillParams } from '../../types/skillType.js';
+import mineflayer_pathfinder from 'mineflayer-pathfinder';
+const { goals } = mineflayer_pathfinder;
+import { Entity } from 'prismarine-entity';
+import { Vec3 } from 'vec3';
 
-import {ISkillServiceParams, ISkillParams} from '../../types/skillType.js';
-import {goals} from 'mineflayer-pathfinder';
-import {Entity} from 'prismarine-entity';
-import {Vec3} from 'vec3';
+import { isSignalAborted, validateSkillParams } from '../index.js';
+import { findClosestPlayerByName } from '../library/findClosestPlayerByName.js';
+import { cancelableMove } from '../library/navigateToLocation.js';
 
-import {isSignalAborted, validateSkillParams} from '../index.js';
-import {findClosestPlayerByName} from '../library/findClosestPlayerByName.js';
-import {cancelableMove} from '../library/navigateToLocation.js';
-
-const {GoalXZ} = goals;
+const { GoalXZ } = goals;
 
 /**
  *  Runs away from hostile mobs or players
@@ -50,7 +50,7 @@ export const runAway = async (
     runDistance: params.runDistance ?? 10,
     signal: serviceParams.signal,
   };
-  let {targetType, targetName, runDistance, signal} = unpackedParams;
+  let { targetType, targetName, runDistance, signal } = unpackedParams;
   // Define the radius within which you want to detect mobs
   const NEARBY_ENTITY_RADIUS = bot.nearbyEntityRadius;
   const MIN_DISTANCE = 0.01; // Minimum distance to avoid extremely small values
@@ -83,7 +83,7 @@ export const runAway = async (
       version < 10 ? 6 : version < 14 ? 7 : version < 17 ? 8 : 9;
     if (targetName) {
       if (targetType === 'player') {
-        const closestPlayer = findClosestPlayerByName(bot, {name: targetName});
+        const closestPlayer = findClosestPlayerByName(bot, { name: targetName });
         return (
           isNearbyEntity(entity) &&
           entity.username !== bot.entity.username &&
@@ -113,7 +113,7 @@ export const runAway = async (
   }
 
   // Calculate the weighted vector direction to run away
-  const runVector = {x: 0, y: 0, z: 0};
+  const runVector = { x: 0, y: 0, z: 0 };
   hostileMobs.forEach((mob) => {
     const vector = {
       x: bot.entity.position.x - mob.position.x,
@@ -154,7 +154,7 @@ export const runAway = async (
   const goal = new GoalXZ(runDestination.x, runDestination.z);
 
   // execute a cancelable move to the destination
-  const result = await cancelableMove(bot, {goal, signal});
+  const result = await cancelableMove(bot, { goal, signal });
 
   // check signal 1st
   if (isSignalAborted(signal)) {

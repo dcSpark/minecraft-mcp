@@ -1,14 +1,15 @@
-import {closest, distance} from 'fastest-levenshtein';
+import { closest, distance } from 'fastest-levenshtein';
 import minecraftData from 'minecraft-data';
-import {Bot} from 'mineflayer';
-import {goals, Movements} from 'mineflayer-pathfinder';
-import {Block} from 'prismarine-block';
-import {Vec3} from 'vec3';
+import { Bot } from 'mineflayer';
+import mineflayer_pathfinder from 'mineflayer-pathfinder';
+const { goals, Movements } = mineflayer_pathfinder;
+import { Block } from 'prismarine-block';
+import { Vec3 } from 'vec3';
 
-import {ISkillServiceParams} from '../../types/skillType.js';
-import {asyncwrap} from './asyncwrap.js';
+import { ISkillServiceParams } from '../../types/skillType.js';
+import { asyncwrap } from './asyncwrap.js';
 
-const {GoalLookAtBlock, GoalNear} = goals;
+const { GoalLookAtBlock, GoalNear } = goals;
 
 interface IPlaceBlockOptions {
   name: string;
@@ -42,7 +43,7 @@ export const placeBlock = async (
     alwaysHaveItem: false,
     verbose: false,
   };
-  const {name, x, y, z, verbose, alwaysHaveItem, getStatsData, setStatsData} = {
+  const { name, x, y, z, verbose, alwaysHaveItem, getStatsData, setStatsData } = {
     ...defaultOptions,
     ...options,
   };
@@ -134,7 +135,7 @@ export const placeBlock = async (
       const navigateToTarget = async () => {
         return bot.pathfinder
           .goto(goal)
-          .then(() => {})
+          .then(() => { })
           .catch((err) => {
             if (err.message && err.message.includes('goal was changed')) {
               console.log(`${err}`);
@@ -291,7 +292,7 @@ const moveOutOfPosition = async (
   bot: Bot,
   options: IMoveOutOfPositionOptions,
 ): Promise<boolean> => {
-  const {blockPosition, getStatsData, setStatsData} = options;
+  const { blockPosition, getStatsData, setStatsData } = options;
   // Find a safe position near the target block position
   const safePositions = [
     new Vec3(blockPosition.x - 2, blockPosition.y, blockPosition.z),

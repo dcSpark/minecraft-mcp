@@ -3,6 +3,10 @@ import { Vec3 } from 'vec3';
 import { Block } from 'prismarine-block';
 import { Entity } from 'prismarine-entity';
 import { Item } from 'prismarine-item';
+import minecraftData from 'minecraft-data';
+
+import { ISkillServiceParams, ISkillParams } from '../../types/skillType.js';
+import { validateSkillParams } from '../index.js';
 
 interface SkillParams {
     // No parameters needed for this skill
@@ -37,7 +41,7 @@ function canSeeBlock(bot: Bot, position: Vec3): boolean {
 // Helper function to parse block info
 function parseBlockInfo(bot: Bot, block: Block): string {
     let retVal = block.name;
-    const mcData = require('minecraft-data')(bot.version);
+    const mcData = minecraftData(bot.version);
 
     try {
         // Check if it's a fully grown crop
@@ -113,7 +117,7 @@ function getNearbyEntities(bot: Bot, radius: number = 16): string[] {
     if (!bot.entities || !bot.entity) return [];
 
     const allEntities = Object.values(bot.entities);
-    const mcData = require('minecraft-data')(bot.version);
+    const mcData = minecraftData(bot.version);
 
     const nearbyEntities = allEntities.filter((e: Entity) => {
         if (e.id !== bot.entity.id &&
@@ -188,11 +192,34 @@ function getInventorySummary(bot: Bot): Record<string, number> {
     return items;
 }
 
-export async function lookAround(
+export const lookAround = async (
     bot: Bot,
-    params: SkillParams,
-    serviceParams: ServiceParams
-): Promise<boolean> {
+    params: ISkillParams,
+    serviceParams: ISkillServiceParams,
+): Promise<boolean> => {
+    const skillName = 'lookAround';
+    const requiredParams: string[] = [];
+    const isParamsValid = validateSkillParams(
+        { ...serviceParams },
+        requiredParams,
+        skillName,
+    );
+    if (!isParamsValid) {
+        serviceParams.cancelExecution?.();
+        bot.emit(
+            'alteraBotEndObservation',
+            `Mistake: You didn't provide all of the required parameters ${requiredParams.join(', ')} for the ${skillName} skill.`,
+        );
+        return false;
+    }
+
+    bot.emit(
+        'alteraBotStartObservation',
+        `🔍 SCANNING ENVIRONMENT 🔍`,
+    );
+
+    const mcData = minecraftData(bot.version);
+
     try {
         bot.emit('alteraBotStartObservation', 'Looking around to observe the environment...');
 
@@ -214,7 +241,6 @@ export async function lookAround(
         // Biome
         const block = bot.blockAt(bot.entity.position);
         if (block && block.biome) {
-            const mcData = require('minecraft-data')(bot.version);
             const biomeName = mcData.biomes[block.biome.id]?.name || 'unknown';
             observations.push(`You are in a ${biomeName} biome.`);
         }
@@ -301,6 +327,6 @@ export async function lookAround(
         bot.emit('alteraBotEndObservation', `Failed to look around: ${error}`);
         return false;
     }
-} 
+}
 
 

@@ -1,5 +1,34 @@
 #!/usr/bin/env node
 
+// Redirect ALL console.log output to stderr to prevent stdout pollution
+// This MUST be done before any other imports or code
+const originalConsoleLog = console.log;
+console.log = (...args: any[]) => {
+    console.error('[LOG]', ...args);
+};
+
+// Also redirect console.dir which might be used for error objects
+const originalConsoleDir = console.dir;
+console.dir = (obj: any, options?: any) => {
+    console.error('[DIR]', obj, options);
+};
+
+// Intercept direct writes to stdout to ensure only JSON-RPC messages go through
+const originalStdoutWrite = process.stdout.write.bind(process.stdout);
+(process.stdout as any).write = (chunk: any, encoding?: any, callback?: any) => {
+    // Check if this looks like a JSON-RPC message
+    const str = chunk.toString();
+    if (str.trim().startsWith('{') && str.includes('"jsonrpc"')) {
+        // This looks like a JSON-RPC message, let it through
+        return originalStdoutWrite(chunk, encoding, callback);
+    } else {
+        // Redirect non-JSON-RPC output to stderr
+        console.error('[STDOUT REDIRECT]', str.trim());
+        if (callback) callback();
+        return true;
+    }
+};
+
 import { Server } from '@modelcontextprotocol/sdk/server/index.js';
 import { StdioServerTransport } from '@modelcontextprotocol/sdk/server/stdio.js';
 import {
@@ -169,31 +198,36 @@ server.setRequestHandler(CallToolRequestSchema, async (request: CallToolRequest)
             const botId = botManager.addBot(username, bot);
 
             // Wait for spawn
-            await new Promise<void>((resolve, reject) => {
-                bot.once('spawn', () => {
-                    console.error(`[MCP] Bot ${username} spawned, initializing additional properties...`);
+            await Promise.race([
+                new Promise<void>((resolve, reject) => {
+                    bot.once('spawn', () => {
+                        console.error(`[MCP] Bot ${username} spawned, initializing additional properties...`);
 
-                    // Initialize properties that skills expect
-                    bot.exploreChunkSize = 16; // INTERNAL_MAP_CHUNK_SIZE
-                    bot.knownChunks = bot.knownChunks || {};
-                    bot.currentSkillCode = '';
-                    bot.currentSkillData = {};
+                        // Initialize properties that skills expect
+                        bot.exploreChunkSize = 16; // INTERNAL_MAP_CHUNK_SIZE
+                        bot.knownChunks = bot.knownChunks || {};
+                        bot.currentSkillCode = '';
+                        bot.currentSkillData = {};
 
-                    // Set constants that skills use
-                    bot.nearbyBlockXZRange = 20; // NEARBY_BLOCK_XZ_RANGE
-                    bot.nearbyBlockYRange = 10; // NEARBY_BLOCK_Y_RANGE
-                    bot.nearbyPlayerRadius = 10; // NEARBY_PLAYER_RADIUS
-                    bot.hearingRadius = 30; // HEARING_RADIUS
-                    bot.nearbyEntityRadius = 10; // NEARBY_ENTITY_RADIUS
+                        // Set constants that skills use
+                        bot.nearbyBlockXZRange = 20; // NEARBY_BLOCK_XZ_RANGE
+                        bot.nearbyBlockYRange = 10; // NEARBY_BLOCK_Y_RANGE
+                        bot.nearbyPlayerRadius = 10; // NEARBY_PLAYER_RADIUS
+                        bot.hearingRadius = 30; // HEARING_RADIUS
+                        bot.nearbyEntityRadius = 10; // NEARBY_ENTITY_RADIUS
 
-                    // Initialize chat history tracking
-                    initializeChatHistory(bot);
+                        // Initialize chat history tracking
+                        initializeChatHistory(bot);
 
-                    resolve();
-                });
-                bot.once('error', (err: Error) => reject(err));
-                bot.once('kicked', (reason: string) => reject(new Error(`Bot kicked: ${reason}`)));
-            });
+                        resolve();
+                    });
+                    bot.once('error', (err: Error) => reject(err));
+                    bot.once('kicked', (reason: string) => reject(new Error(`Bot kicked: ${reason}`)));
+                }),
+                new Promise<never>((_, reject) =>
+                    setTimeout(() => reject(new Error('Bot spawn timed out after 30 seconds')), 30000)
+                )
+            ]);
 
             return {
                 content: [{
@@ -266,8 +300,13 @@ server.setRequestHandler(CallToolRequestSchema, async (request: CallToolRequest)
                 throw new Error("No active bot. Please use 'joinGame' first to spawn a bot.");
             }
 
-            // Execute the skill
-            const result = await skill.execute(bot, args);
+            // Execute the skill with 30-second timeout
+            const result = await Promise.race([
+                skill.execute(bot, args),
+                new Promise<never>((_, reject) =>
+                    setTimeout(() => reject(new Error('Skill execution timed out after 30 seconds')), 30000)
+                )
+            ]);
 
             return {
                 content: [{
@@ -315,7 +354,18 @@ process.on('SIGINT', () => {
     process.exit(0);
 });
 
+// Capture any uncaught exceptions and send to stderr
+process.on('uncaughtException', (error) => {
+    console.error('[UNCAUGHT EXCEPTION]', error);
+    process.exit(1);
+});
+
+// Capture any unhandled promise rejections and send to stderr
+process.on('unhandledRejection', (reason, promise) => {
+    console.error('[UNHANDLED REJECTION] at:', promise, 'reason:', reason);
+});
+
 main().catch((error) => {
     console.error("Failed to start server:", error);
     process.exit(1);
-}); 
+});

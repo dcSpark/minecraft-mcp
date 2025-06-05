@@ -10,9 +10,9 @@ import {validateSkillParams} from '../index.js';
  *
  * @param {Object} bot - The Mineflayer bot instance.
  * @param {Object} params
- * @param {string} params.itemName.stringValue - The name of the item to smelt.
- * @param {string} params.fuelName.stringValue - The name of the fuel used for smelting. Must be a resource from your inventory.
- * @param {number} [params.count.numberValue=1] - The minimum number of items to craft. Defaults to 1. 2 is a good baseline.  Maximum is 4.
+ * @param {string} params.itemName - The name of the item to smelt.
+ * @param {string} params.fuelName - The name of the fuel used for smelting. Must be a resource from your inventory.
+ * @param {number} [params.count=1] - The minimum number of items to craft. Defaults to 1. 2 is a good baseline.  Maximum is 4.
  * @param {object} serviceParams - additional parameters for the skill function.
  * @param {AbortSignal} serviceParams.signal - The signal to abort the skill.
  * @param {ISkillServiceParams['getStatsData']} serviceParams.getStatsData - The function to get the stats data.
@@ -42,9 +42,9 @@ export const smeltItem = async (
   const {signal, getStatsData, setStatsData} = serviceParams;
 
   const unpackedParams = {
-    itemName: params.itemName.stringValue,
-    fuelName: params.fuelName.stringValue,
-    count: params.count.numberValue ?? 1,
+    itemName: params.itemName,
+    fuelName: params.fuelName,
+    count: params.count ?? 1,
   };
 
   unpackedParams.count = Math.min(unpackedParams.count, 4);

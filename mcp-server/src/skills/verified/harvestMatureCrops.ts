@@ -1,20 +1,22 @@
-import {Bot} from 'mineflayer';
-import {goals} from 'mineflayer-pathfinder';
-import {Vec3} from 'vec3';
+import mineflayer_pathfinder from 'mineflayer-pathfinder';
+const { goals } = mineflayer_pathfinder;
+import { Bot } from 'mineflayer';
+import { Vec3 } from 'vec3';
+import { Block } from 'prismarine-block';
 
-import {ISkillServiceParams, ISkillParams} from '../../types/skillType.js';
-import {isSignalAborted, validateSkillParams} from '../index.js';
-import {asyncwrap} from '../library/asyncwrap.js';
-import {cancelableMove} from '../library/navigateToLocation.js';
+import { ISkillServiceParams, ISkillParams } from '../../types/skillType.js';
+import { isSignalAborted, validateSkillParams } from '../index.js';
+import { asyncwrap } from '../library/asyncwrap.js';
+import { cancelableMove } from '../library/navigateToLocation.js';
 
-const {GoalNear} = goals;
+const { GoalNear } = goals;
 
 /**
  * Harvest mature crops around the bot.
  *
  * @param {Bot} bot - The Mineflayer bot instance.
  * @param {IFunctionCall} params - The parameters for the skill function.
- * @param {number} params.number.numberValue - OPTIONAL: The number of wheat to harvest. Defaults to 1000.
+ * @param {number} params.number - OPTIONAL: The number of wheat to harvest. Defaults to 1000.
  * @param {number} params.radius.radius - OPTIONAL: The radius around the your current position within which to harvest mature crops. Defaults to 16.
  * @param {ISkillServiceParams} serviceParams - additional parameters for the skill function.
  *
@@ -46,18 +48,18 @@ export const harvestMatureCrops = async (
     radius: params.radius ?? 16,
   };
 
-  const {number, radius} = unpackedParams;
-  const {signal, getStatsData, setStatsData} = serviceParams;
+  const { number, radius } = unpackedParams;
+  const { signal, getStatsData, setStatsData } = serviceParams;
 
   // Define crop types and their mature stage block state
   const cropsInfo = [
-    {name: 'wheat', matureState: 7},
-    {name: 'carrots', matureState: 7},
-    {name: 'potatoes', matureState: 7},
-    {name: 'beetroots', matureState: 3}, // Note: Beetroots mature at state 3
+    { name: 'wheat', matureState: 7 },
+    { name: 'carrots', matureState: 7 },
+    { name: 'potatoes', matureState: 7 },
+    { name: 'beetroots', matureState: 3 }, // Note: Beetroots mature at state 3
   ];
 
-  const matureCrops = await findMatureCrops(bot, {cropsInfo, number, radius});
+  const matureCrops = await findMatureCrops(bot, { cropsInfo, number, radius });
 
   // console.log("Mature crops found: ", matureCrops.length)
   if (matureCrops.length === 0) {
@@ -67,12 +69,12 @@ export const harvestMatureCrops = async (
     );
   }
 
-  await harvestCrops(bot, {matureCrops, signal, getStatsData, setStatsData});
+  await harvestCrops(bot, { matureCrops, signal, getStatsData, setStatsData });
   bot.emit('alteraBotEndObservation', 'You have finished harvesting crops');
 };
 
 interface IFindMatureCropsOptions {
-  cropsInfo: {name: string; matureState: number}[];
+  cropsInfo: { name: string; matureState: number }[];
   number: number;
   radius: number;
 }
@@ -89,8 +91,8 @@ interface IFindMatureCropsOptions {
 const findMatureCrops = async (
   bot: Bot,
   options: IFindMatureCropsOptions,
-): Promise<Array<{x: number; y: number; z: number}>> => {
-  const {cropsInfo, number, radius} = options;
+): Promise<Array<{ x: number; y: number; z: number }>> => {
+  const { cropsInfo, number, radius } = options;
   const matureCrops = [];
   for (const cropInfo of cropsInfo) {
     const cropBlockId = bot.registry.blocksByName[cropInfo.name]?.id;
@@ -110,7 +112,7 @@ const findMatureCrops = async (
 };
 
 interface IHarvestCrops {
-  matureCrops: Array<{x: number; y: number; z: number}>;
+  matureCrops: Array<{ x: number; y: number; z: number }>;
   signal: AbortSignal;
   getStatsData: ISkillServiceParams['getStatsData'];
   setStatsData: ISkillServiceParams['setStatsData'];
@@ -130,14 +132,14 @@ const harvestCrops = async (
   bot: Bot,
   options: IHarvestCrops,
 ): Promise<boolean> => {
-  const {matureCrops, signal, getStatsData, setStatsData} = options;
+  const { matureCrops, signal, getStatsData, setStatsData } = options;
 
   for (const pos of matureCrops) {
     try {
       const block = bot.blockAt(new Vec3(pos.x, pos.y, pos.z));
       if (block) {
         const goal = new GoalNear(pos.x, pos.y, pos.z, 1);
-        const result = cancelableMove(bot, {goal, signal});
+        const result = cancelableMove(bot, { goal, signal });
         // check for cancelation signal
         if (isSignalAborted(signal)) {
           return bot.emit(
@@ -149,7 +151,7 @@ const harvestCrops = async (
         const digFn = async function () {
           return bot.dig(block);
         };
-        await asyncwrap({func: digFn, getStatsData, setStatsData});
+        await asyncwrap({ func: digFn, getStatsData, setStatsData });
 
         bot.emit(
           'alteraBotTextObservation',
@@ -160,7 +162,7 @@ const harvestCrops = async (
         const waitFn = async function () {
           return new Promise((resolve) => setTimeout(resolve, 1000));
         };
-        await asyncwrap({func: waitFn, setStatsData, getStatsData}); // Wait for 1 second
+        await asyncwrap({ func: waitFn, setStatsData, getStatsData }); // Wait for 1 second
       }
     } catch (error) {
       console.error(

@@ -8,9 +8,9 @@ import {useFurnace} from '../library/useFurnace.js';
  *
  * @param {Bot} bot - The Mineflayer bot instance. Assume the bot is already spawned in the world.
  * @param {object} params
- * @param {string} params.itemName.stringValue - The name of the item to cook.
- * @param {string} params.fuelName.stringValue - The name of the fuel used for cooking. Must be a resource from your inventory.
- * @param {number} params.count.numberValue - The minimum number of items to craft. Defaults to 1, maximum is 64
+ * @param {string} params.itemName - The name of the item to cook.
+ * @param {string} params.fuelName - The name of the fuel used for cooking. Must be a resource from your inventory.
+ * @param {number} params.count - The minimum number of items to craft. Defaults to 1, maximum is 64
  * @param {object} serviceParams - additional parameters for the skill function.
  *
  * @return {Promise<boolean>} - Returns a promise that resolves to true if cooking is successful, otherwise false.
@@ -42,8 +42,8 @@ export const cookItem = async (
   const useCount: number = Math.min(defaultParams.count, 4);
 
   return await useFurnace(bot, {
-    itemName: params.itemName.stringValue,
-    fuelName: params.fuelName.stringValue,
+    itemName: params.itemName,
+    fuelName: params.fuelName,
     count: useCount,
     action: 'cook',
     signal: serviceParams.signal,

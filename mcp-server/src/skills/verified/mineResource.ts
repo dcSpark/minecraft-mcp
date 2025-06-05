@@ -8,8 +8,8 @@ import {mineBlock} from '../library/mineBlock.js';
  *
  * @param {Object} bot - The Mineflayer bot instance.
  * @param {object} params
- * @param {string} params.name.stringValue - The name of the resource to mine.
- * @param {number} params.count.numberValue - The amount of resources to mine.
+ * @param {string} params.name - The name of the resource to mine.
+ * @param {number} params.count - The amount of resources to mine.
  * @param {object} serviceParams - additional parameters for the skill function.
  */
 
@@ -41,7 +41,7 @@ export const mineResource = async (
   }
 
   const unpackedParams = {
-    name: params.name.stringValue,
+    name: params.name,
     count: params.count ?? 1,
   };
 

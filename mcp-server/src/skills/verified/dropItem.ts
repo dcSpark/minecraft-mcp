@@ -1,17 +1,17 @@
-import {Bot} from 'mineflayer';
+import { Bot } from 'mineflayer';
 
-import {ISkillServiceParams, ISkillParams} from '../../types/skillType.js';
-import {validateSkillParams} from '../index.js';
-import {asyncwrap} from '../library/asyncwrap.js';
-import {findClosestItemName} from '../library/findClosestItemName.js';
-import {tossItemTowardsPlayer} from '../library/tossItemTowardsPlayer.js';
+import { ISkillServiceParams, ISkillParams } from '../../types/skillType.js';
+import { validateSkillParams } from '../index.js';
+import { asyncwrap } from '../library/asyncwrap.js';
+import { findClosestItemName } from '../library/findClosestItemName.js';
+import { tossItemTowardsPlayer } from '../library/tossItemTowardsPlayer.js';
 /**
  * Drops a specified item from the inventory on the ground.
  * @param {Object} bot - The Mineflayer bot instance.
  * @param {object} params
- * @param {string} params.name.stringValue - The name of the item to drop.
- * @param {number} params.count.numberValue - The number of items to drop. Defaults to 1 if not specified.
- * @param {string} params.userName.stringValue - OPTIONAL: The name of the player you are trying to give the item to, this should be null if you're not trying to give the item to a player
+ * @param {string} params.name - The name of the item to drop.
+ * @param {number} params.count - The number of items to drop. Defaults to 1 if not specified.
+ * @param {string} params.userName - OPTIONAL: The name of the player you are trying to give the item to, this should be null if you're not trying to give the item to a player
  * @param {object} serviceParams - additional parameters for the skill function.
  *
  */
@@ -36,10 +36,10 @@ export const dropItem = async (
     );
     return false;
   }
-  const {getStatsData, setStatsData} = serviceParams;
+  const { getStatsData, setStatsData } = serviceParams;
 
   const unpackedParams = {
-    name: params.name.stringValue,
+    name: params.name,
     count: params.count ?? 1,
     playerName: params.userName ?? null,
     signal: serviceParams.signal,
@@ -58,7 +58,7 @@ export const dropItem = async (
   }
 
   // Find the closest item name from the input
-  const closestItemName = findClosestItemName(bot, {name: unpackedParams.name});
+  const closestItemName = findClosestItemName(bot, { name: unpackedParams.name });
   if (!closestItemName) {
     return bot.emit(
       'alteraBotEndObservation',
@@ -88,7 +88,7 @@ export const dropItem = async (
     const tossFn = async function () {
       return bot.toss(itemToDrop.type, null, dropItemCount);
     };
-    await asyncwrap({func: tossFn, getStatsData, setStatsData});
+    await asyncwrap({ func: tossFn, getStatsData, setStatsData });
     return bot.emit(
       'alteraBotEndObservation',
       `You dropped ${dropItemCount} ${unpackedParams.name}.`,

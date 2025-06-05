@@ -1,22 +1,23 @@
 import minecraftData from 'minecraft-data';
-import {Bot} from 'mineflayer';
-import {Movements} from 'mineflayer-pathfinder';
-import {Block} from 'prismarine-block';
-import {iterators} from 'prismarine-world';
-import {Vec3} from 'vec3';
+import { Bot } from 'mineflayer';
+import mineflayer_pathfinder from 'mineflayer-pathfinder';
+const { Movements } = mineflayer_pathfinder;
+import { Block } from 'prismarine-block';
+import { iterators } from 'prismarine-world';
+import { Vec3 } from 'vec3';
 
-import {ISkillServiceParams, ISkillParams} from '../../types/skillType.js';
-import {validateSkillParams} from '../index.js';
-import {asyncwrap} from '../library/asyncwrap.js';
-import {findClosestItemName} from '../library/findClosestItemName.js';
-import {placeBlock} from '../library/placeBlock.js';
-import {tossItemTowardsPlayer} from '../library/tossItemTowardsPlayer.js';
+import { ISkillServiceParams, ISkillParams } from '../../types/skillType.js';
+import { validateSkillParams } from '../index.js';
+import { asyncwrap } from '../library/asyncwrap.js';
+import { findClosestItemName } from '../library/findClosestItemName.js';
+import { placeBlock } from '../library/placeBlock.js';
+import { tossItemTowardsPlayer } from '../library/tossItemTowardsPlayer.js';
 
 const OctahedronIterator = iterators.OctahedronIterator;
 
 interface ICanPlaceItemHereOptions {
   block: Block;
-  movements: Movements;
+  movements: any;
 }
 
 interface IIsEntityAtPositionOptions {
@@ -28,8 +29,8 @@ interface IIsEntityAtPositionOptions {
  *
  * @param {Object} bot - The Mineflayer bot instance.
  * @param {Object} params
- * @param {string} params.itemName.stringValue - The name of the item to place.
- * @param {string} params.userName.stringValue - OPTIONAL: The name of the player you are trying to give the item to, this should be null if you're not trying to give the item to a player
+ * @param {string} params.itemName - The name of the item to place.
+ * @param {string} params.userName - OPTIONAL: The name of the player you are trying to give the item to, this should be null if you're not trying to give the item to a player
  * @param {Object} serviceParams - additional parameters for the skill function.
  *
  */
@@ -53,10 +54,10 @@ export const placeItemNearYou = async (
     );
     return false;
   }
-  const {signal, getStatsData, setStatsData} = serviceParams;
+  const { signal, getStatsData, setStatsData } = serviceParams;
 
   const unpackedParams = {
-    itemName: params.itemName.stringValue,
+    itemName: params.itemName,
     playerName: params.userName ?? null,
   };
 
@@ -120,7 +121,7 @@ export const placeItemNearYou = async (
 
   while (next) {
     const block = bot.blockAt(next);
-    const canPlace = canPlaceItemHere(bot, {block, movements});
+    const canPlace = canPlaceItemHere(bot, { block, movements });
     if (canPlace) {
       placementBlock = block;
       break;
@@ -217,13 +218,13 @@ const canPlaceItemHere = (
   bot: Bot,
   options: ICanPlaceItemHereOptions,
 ): boolean => {
-  const {block, movements} = options;
+  const { block, movements } = options;
   if (!block) {
     return false;
   }
 
   // If there is an entity at the block position, return false
-  if (isEntityAtPosition(bot, {position: block.position})) {
+  if (isEntityAtPosition(bot, { position: block.position })) {
     return false;
   }
 
@@ -266,7 +267,7 @@ function isEntityAtPosition(
   bot: Bot,
   options: IIsEntityAtPositionOptions,
 ): boolean {
-  const {position} = options;
+  const { position } = options;
   // Get entities within the bot's view distance
   const entities = Object.values(bot.entities);
 

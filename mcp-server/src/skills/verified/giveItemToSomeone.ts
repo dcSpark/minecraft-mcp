@@ -8,9 +8,9 @@ import {tossItemTowardsPlayer} from '../library/tossItemTowardsPlayer.js';
  *
  * @param {Object} bot - The Mineflayer bot instance.
  * @param {object} params
- * @param {string} params.userName.stringValue - The target person's name who you are giving something to
- * @param {string} params.itemName.stringValue - The item to give, you must have it in your inventory
- * @param {number} params.itemCount.numberValue - The amount to give, this should not be more than you have in your inventory
+ * @param {string} params.userName - The target person's name who you are giving something to
+ * @param {string} params.itemName - The item to give, you must have it in your inventory
+ * @param {number} params.itemCount - The amount to give, this should not be more than you have in your inventory
  * @param {object} serviceParams - additional parameters for the skill function.
  *
  */
@@ -37,8 +37,8 @@ export const giveItemToSomeone = async (
   }
 
   const unpackedParams = {
-    playerName: params.userName.stringValue,
-    itemName: params.itemName.stringValue,
+    playerName: params.userName,
+    itemName: params.itemName,
     itemCount: params.itemCount ?? 1,
   };
 

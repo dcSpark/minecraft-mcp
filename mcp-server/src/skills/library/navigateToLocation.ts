@@ -1,6 +1,9 @@
 import { Bot } from 'mineflayer';
-import mineflayer_pathfinder from 'mineflayer-pathfinder';
+import { Entity } from 'prismarine-entity';
+import { Item } from 'prismarine-item';
 import { Vec3 } from 'vec3';
+import minecraftData from 'minecraft-data';
+import mineflayer_pathfinder from 'mineflayer-pathfinder';
 
 import { isSignalAborted } from '../index.js';
 import { teleportToLocation } from './teleportToLocation.js';
@@ -164,7 +167,7 @@ export const getNearestSurfaceBlock = (
   const { x, y, z } = options;
   let block = bot.blockAt(new Vec3(x, y, z));
   let newY = Math.ceil(y);
-  const mcData = require('minecraft-data')(bot.version);
+  const mcData = minecraftData(bot.version);
 
   // if we're in the ground, search up
   if (block && block.type != mcData.blocksByName.air.id) {

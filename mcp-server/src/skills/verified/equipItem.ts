@@ -13,7 +13,7 @@ import {findClosestItemName} from '../library/findClosestItemName.js';
  * @param {Bot} bot - The Mineflayer bot instance. Assume the bot is already spawned in the world.
  * @param {ISkillParams} params - The parameters for the skill.
  * @param {ISkillServiceParams} serviceParams - The service parameters for the skill.
- * @param {string} params.name.stringValue - The name of the item to be equipped.
+ * @param {string} params.name - The name of the item to be equipped.
  * @param {ISkillServiceParams['getStatsData']} serviceParams.getStatsData - The function to get the stats data.
  * @param {ISkillServiceParams['setStatsData']} serviceParams.setStatsData - The function to set the stats data.
  *
@@ -40,7 +40,7 @@ export const equipItem = async (
     return false;
   }
   const unpackedParams = {
-    name: params.name.stringValue,
+    name: params.name,
     getStatsData: serviceParams.getStatsData,
     setStatsData: serviceParams.setStatsData,
   };
