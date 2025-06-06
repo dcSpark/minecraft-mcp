@@ -2,7 +2,7 @@
 
 This library is the Client library for a Minecraft Game Skills and MCP Integration.
 
-Fairies MCP Client (https://fairies.ai/) also supports direct connection with a single click.
+Fairies MCP Client (<https://fairies.ai/>) also supports direct connection with a single click.
 
 ## Features
 
@@ -58,16 +58,31 @@ Options:
   --help            Display help
 ```
 
-### Integration with Claude Desktop or JSON configurations
+### Integration with Claude Desktop or JSON configurations Locally
 
 Add to your Claude Desktop configuration (`~/Library/Application Support/Claude/claude_desktop_config.json` on macOS):
+
+For remote installation (recommended)
+
+```json
+{
+  "mcpServers": {
+    "minecraft": {
+      "command": "npx",
+      "args": ["@fundamentallabs/minecraft-mcp"]
+    }
+  }
+}
+```
+
+If running locally from source:
 
 ```json
 {
   "mcpServers": {
     "minecraft": {
       "command": "node",
-      "args": ["/path/to/minecraft-mcp/minecraft-client/mcp-server/dist/mcp-server.js", "-p", "25565", "-h", "localhost"]
+      "args": ["/path/to/minecraft-mcp/minecraft-client/mcp-server/dist/mcp-server.js"]
     }
   }
 }
