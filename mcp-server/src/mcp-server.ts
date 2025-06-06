@@ -308,17 +308,34 @@ server.setRequestHandler(CallToolRequestSchema, async (request: CallToolRequest)
                 )
             ]);
 
+            // Ensure result is properly formatted
+            let responseText: string;
+            if (result === undefined || result === null) {
+                responseText = `Skill '${name}' executed successfully`;
+            } else if (typeof result === 'string') {
+                responseText = result;
+            } else if (typeof result === 'object') {
+                // If result is already an object, stringify it
+                responseText = JSON.stringify(result, null, 2);
+            } else {
+                // For any other type, convert to string
+                responseText = String(result);
+            }
+
             return {
                 content: [{
                     type: "text",
-                    text: typeof result === 'string' ? result : JSON.stringify(result, null, 2)
+                    text: responseText
                 }]
             };
         } catch (error) {
+            const errorMessage = error instanceof Error ? error.message : String(error);
+            console.error(`[MCP] Skill '${name}' execution error:`, error);
+
             return {
                 content: [{
                     type: "text",
-                    text: `Skill execution failed: ${error instanceof Error ? error.message : String(error)}`
+                    text: `Skill execution failed: ${errorMessage}`
                 }],
                 isError: true
             };

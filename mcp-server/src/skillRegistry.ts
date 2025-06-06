@@ -477,16 +477,21 @@ function createSkillExecutor(skillName: string) {
                     response += observations[0];
                 }
 
+                console.error(`[MCP] Skill '${skillName}' returning observation response:`, response.substring(0, 100) + '...');
                 return response.trim();
             }
 
             // If no observations but we have a result, return it
             if (result !== undefined && result !== null) {
-                return String(result);
+                const resultStr = String(result);
+                console.error(`[MCP] Skill '${skillName}' returning result as string:`, resultStr);
+                return resultStr;
             }
 
             // Default response
-            return `Skill '${skillName}' executed successfully`;
+            const defaultResponse = `Skill '${skillName}' executed successfully`;
+            console.error(`[MCP] Skill '${skillName}' returning default response:`, defaultResponse);
+            return defaultResponse;
         } catch (error) {
             console.error(`[MCP] Error executing skill '${skillName}':`, error);
             throw new Error(`Failed to execute skill '${skillName}': ${error instanceof Error ? error.message : String(error)}`);
