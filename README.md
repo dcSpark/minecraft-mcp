@@ -2,6 +2,8 @@
 
 This library is the Client library for a Minecraft Game Skills and MCP Integration.
 
+Fairies (https://fairies.ai/) also supports direct connection with a single click
+
 ## Features
 
 - **Full Minecraft Control**: Connect AI agents to Minecraft servers and control bots
