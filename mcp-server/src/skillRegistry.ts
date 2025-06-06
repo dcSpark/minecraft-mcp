@@ -2,7 +2,7 @@ import { Bot } from 'mineflayer';
 import { BotWithLogger } from './types.js';
 import { readdir } from 'fs/promises';
 import { join, dirname } from 'path';
-import { fileURLToPath } from 'url';
+import { fileURLToPath, pathToFileURL } from 'url';
 import { existsSync } from 'fs';
 
 const __dirname = dirname(fileURLToPath(import.meta.url));
@@ -386,7 +386,11 @@ function createSkillExecutor(skillName: string) {
                 );
             }
 
-            const skillModule = await import(skillModulePath);
+            // Convert file path to file URL for proper ES module import
+            const skillModuleUrl = pathToFileURL(skillModulePath).href;
+            console.error(`[MCP] Importing skill from URL: ${skillModuleUrl}`);
+
+            const skillModule = await import(skillModuleUrl);
             console.error(`[MCP] Skill module loaded successfully`);
 
             // Get the skill function
