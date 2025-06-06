@@ -17,7 +17,7 @@ Fairies MCP Client (<https://fairies.ai/>) also supports direct connection with 
 ### Direct call via npx (Recommended)
 
 ```bash
-npx @fundamentallabs/minecraft-mcp
+npx --y -- @fundamentallabs/minecraft-mcp
 ```
 
 ### Via npm (Recommended)
@@ -69,7 +69,7 @@ For remote installation (recommended)
   "mcpServers": {
     "minecraft": {
       "command": "npx",
-      "args": ["@fundamentallabs/minecraft-mcp"]
+      "args": ["-y", "-- @fundamentallabs/minecraft-mcp"]
     }
   }
 }

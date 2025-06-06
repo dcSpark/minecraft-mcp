@@ -16,9 +16,38 @@
     "module": "commonjs",
     "moduleResolution": "node",
     "sourceMap": true,
-    "typeRoots": ["./node_modules/@types", "./src/types"],
-    "outDir": "./dist"
+    "typeRoots": [
+      "./node_modules/@types",
+      "./src/types"
+    ],
+    "outDir": "./dist",
+    "baseUrl": ".",
+    "paths": {
+      "mineflayer-pathfinder": [
+        "./mineflayer-pathfinder/index"
+      ],
+      "mineflayer-pathfinder/*": [
+        "./mineflayer-pathfinder/*"
+      ],
+      "mineflayer-collectblock": [
+        "./mineflayer-collectblock/lib/index"
+      ],
+      "mineflayer-collectblock/*": [
+        "./mineflayer-collectblock/lib/*"
+      ],
+      "mineflayer-pvp": [
+        "./mineflayer-pvp/lib/index"
+      ],
+      "mineflayer-pvp/*": [
+        "./mineflayer-pvp/lib/*"
+      ]
+    }
   },
-  "include": ["src/**/*", "src/**/*.json"],
-  "exclude": ["node_modules"]
+  "include": [
+    "src/**/*",
+    "src/**/*.json"
+  ],
+  "exclude": [
+    "node_modules"
+  ]
 }

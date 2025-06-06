@@ -1,6 +1,8 @@
-# Fundamental Labs Minecraft MCP Server
+# Fundamental Labs/Minecraft Client
 
-An MCP (Model Context Protocol) server that exposes Minecraft bot skills as tools that AI agents can call. Control Minecraft bots through standardized AI interfaces!
+This library is the Client library for a Minecraft Game Skills and MCP Integration.
+
+Fairies MCP Client (<https://fairies.ai/>) also supports direct connection with a single click.
 
 ## Features
 
@@ -15,7 +17,7 @@ An MCP (Model Context Protocol) server that exposes Minecraft bot skills as tool
 ### Direct call via npx (Recommended)
 
 ```bash
-npx @fundamentallabs/minecraft-mcp
+npx -y -- @fundamentallabs/minecraft-mcp
 ```
 
 ### Via npm (Recommended)
@@ -56,16 +58,31 @@ Options:
   --help            Display help
 ```
 
-### Integration with Claude Desktop
+### Integration with Claude Desktop or JSON configurations Locally
 
 Add to your Claude Desktop configuration (`~/Library/Application Support/Claude/claude_desktop_config.json` on macOS):
+
+For remote installation (recommended)
+
+```json
+{
+  "mcpServers": {
+    "minecraft": {
+      "command": "npx",
+      "args": ["--y" "-- @fundamentallabs/minecraft-mcp"]
+    }
+  }
+}
+```
+
+If running locally from source:
 
 ```json
 {
   "mcpServers": {
     "minecraft": {
       "command": "node",
-      "args": ["/path/to/minecraft-mcp/minecraft-client/mcp-server/dist/mcp-server.js", "-p", "25565", "-h", "localhost"]
+      "args": ["/path/to/minecraft-mcp/minecraft-client/mcp-server/dist/mcp-server.js"]
     }
   }
 }

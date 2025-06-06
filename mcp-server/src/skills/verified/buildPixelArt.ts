@@ -160,7 +160,7 @@ async function loadImage(imagePath: string): Promise<any> {
     try {
         // Check if it's a URL
         if (imagePath.startsWith('http://') || imagePath.startsWith('https://')) {
-            const response = await axios.default.get(imagePath, { responseType: 'arraybuffer' });
+            const response = await axios.get(imagePath, { responseType: 'arraybuffer' });
             return await Jimp.read(Buffer.from(response.data));
         } else {
             // Load from file path
