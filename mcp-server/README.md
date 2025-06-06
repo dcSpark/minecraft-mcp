@@ -12,6 +12,12 @@ An MCP (Model Context Protocol) server that exposes Minecraft bot skills as tool
 
 ## Installation
 
+### Direct call via npx (Recommended)
+
+```bash
+npx @fundamentallabs/minecraft-mcp
+```
+
 ### Via npm (Recommended)
 
 ```bash
