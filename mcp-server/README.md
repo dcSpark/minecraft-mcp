@@ -69,7 +69,7 @@ For remote installation (recommended)
   "mcpServers": {
     "minecraft": {
       "command": "npx",
-      "args": ["--y" "-- @fundamentallabs/minecraft-mcp"]
+      "args": ["--y", "-- @fundamentallabs/minecraft-mcp"]
     }
   }
 }
