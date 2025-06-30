@@ -7,6 +7,9 @@
     "build": "tsc",
     "clean": "rm -rf dist"
   },
+  "bin": {
+     "minecraft-mcp": "npm run build --prefix mcp-server && npm run start --prefix mcp-server"
+  },
   "dependencies": {
     "mineflayer": "^4.14.0",
     "mineflayer-collectblock": "file:../mineflayer-collectblock",
